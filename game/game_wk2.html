@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>es28 WK1 Game</title>
+
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+    </style>
+
+
+</head>
+
+<body>
+    <h1>E28 JS Assignnment Week 2</h1>
+
+    <h2>Prisoner's Dilemma Game</h2>
+
+    <p>The prisoners dilemma was described in Robert Axelrod's book titled <a
+            href="https://en.wikipedia.org/wiki/The_Evolution_of_Cooperation">
+            The evolution of co-operation" (1984) </a>.
+    </p>
+    <p>
+        Based on the <a href="https://en.wikipedia.org/wiki/Prisoner%27s_dilemma">"Prisoner's Dilemma"</a> In this game
+        the goal is to maximize your score by cooperating or not with your opponent. The goal in this game is to get the
+        higher score.
+        The score you receive is based on your acion and the action of your opponent.
+    </p>
+
+    <p>
+        The computer uses <a href="https://en.wikipedia.org/wiki/Tit_for_tat">this strategy.</a>
+    </p>
+
+    <h3> Scoring Matrix</h3>
+
+    <table border="1" width="50%" cellspacing="0">
+        <tbody>
+            <tr>
+                <td colspan="2" rowspan="2" bordercolorlight="#FFFFFF" bordercolordark="#FFFFFF">&nbsp;</td>
+                <td align="center" colspan="2"><b>User Move</b></td>
+            </tr>
+            <tr>
+                <td align="center">Cooperate</td>
+                <td align="center">Defect</td>
+            </tr>
+            <tr>
+                <td rowspan="2"><b>Computer<br>
+                        &nbsp;Move</b></td>
+                <td>Cooperate</td>
+                <td align="center" bgcolor="#C0C0C0"><b>3</b>/3</td>
+                <td width="20%" align="center" bgcolor="#C0C0C0"><b>4</b>/1</td>
+            </tr>
+            <tr>
+                <td>Deffect</td>
+                <td align="center" bgcolor="#C0C0C0"><b>1</b>/4</td>
+                <td align="center" bgcolor="#C0C0C0"><b>2</b>/2</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <hr>
+
+    <h3> Game </h3>
+
+    <p> To play simply select you action for each turn.</p>
+    <div id="gameboard">
+        <table border="1" width="50%" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>Turn Number</th>
+                    <th>Your Move</th>
+                    <th>Computer Move</th>
+                    <th>Your Score</th>
+                    <th>Computer Score</th>
+                </tr>
+            </thead>
+            <tbody id="gameMovesTable">
+
+            </tbody>
+        </table>
+
+
+    </div>
+    <hr>
+
+    <div id="gameControls">
+        <p>Game is 10 Rounds. Take Turn: </p>
+        <button id='cooperateButton' class="gameButton">Cooperate</button>
+        <button id='deffectButton' class="gameButton"> Defect (Don't Cooperate)</button>
+    </div>
+
+
+    <script>
+
+        // This is a closure thing to encapsulate variables and functions so they're not all
+        // out there in public.
+
+        var COMJEAN = COMJEAN || {};
+
+        COMJEAN.dilemaGame = (function () {
+
+            let turn = 0;
+            let scoreUser = 0;
+            let scoreComputer = 0;
+            let historyUser = [];
+            let historyComputer = [];
+            const maxTurns = 10;
+            let resultsTable = document.querySelector('#gameMovesTable');
+
+
+            // determine computers move
+
+            let computerTurn = function () {
+
+                if (turn == 0) {
+                    return "C";
+                }
+
+                // computer will just do what the user did the previous turn
+                // (tit-for-tat strategy) https://en.wikipedia.org/wiki/Tit_for_tat
+
+                return historyUser[turn - 1];
+
+            }
+
+
+
+            // take turn, compair computers move and score.
+
+            let takeTurn = function (e) {
+                let buttonClicked = e.target.id;
+                let userMove = '';  // set scoped
+
+                // detemine user turn based on button clicked.
+                if (buttonClicked === "cooperateButton") {
+                    userMove = "C";
+                } else {
+                    userMove = "D";
+                }
+
+
+                let computerMove = computerTurn();
+                console.log(computerMove, userMove)
+
+                historyUser.push(userMove);
+                historyComputer.push(computerMove);
+
+                // score
+
+                switch (userMove) {
+                    case 'C':
+                        if (computerMove == "C") {
+                            scoreUser += 3;
+                            scoreComputer += 3;
+                        } else {
+                            scoreUser += 1;
+                            scoreComputer += 4;
+                        }
+                        break;
+
+                    case 'D':
+                        if (computerMove == "C") {
+                            scoreUser += 4;
+                            scoreComputer += 1;
+                        } else {
+                            scoreUser += 2;
+                            scoreComputer += 2;
+                        }
+                        break;
+
+                    default:
+                        console.log('err')
+                }
+
+                turn += 1;
+
+                // Add Results of turn to table
+                var row = resultsTable.insertRow(-1);
+                var cell0 = row.insertCell(0);
+                var cell1 = row.insertCell(1);
+                var cell2 = row.insertCell(2);
+                var cell3 = row.insertCell(3);
+                var cell4 = row.insertCell(4);
+                cell0.innerHTML = turn;
+                cell1.innerHTML = '<span class="r" > <b>' + userMove + '</b></span>';
+                cell2.innerHTML = computerMove;
+                cell3.innerHTML = '<b>' + scoreUser + '</b>';;
+                cell4.innerHTML = scoreComputer;
+
+                // scroll to bottom of page
+                // https://jsfiddle.net/L56wxhqm/678/
+
+                scrollingElement = (document.scrollingElement || document.body)
+                scrollingElement.scrollTop = scrollingElement.scrollHeight;
+
+                // end game
+                if (turn >= maxTurns) {
+                    alert("Game Over : Your Score: " + scoreUser + " Computer Score: " + scoreComputer);
+                    // hide game controls.
+                    document.querySelector('#gameControls').style.display = 'none';
+                }
+            }
+            return {
+                takeTurn: takeTurn
+
+            };
+        }());
+
+        // initialize game
+
+        let game1 = COMJEAN.dilemaGame;
+
+        // bind buttons to game
+
+        let cooperateBtn = document.querySelector('#cooperateButton');
+        let deffectBtn = document.querySelector('#deffectButton');
+
+        deffectBtn.addEventListener('click', game1.takeTurn);
+        cooperateBtn.addEventListener('click', game1.takeTurn);
+
+    </script>
+
+</body>
+
+</html>
