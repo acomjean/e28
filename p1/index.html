@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang='en'>
+
+<head>
+    <title>Vue.js P1 Skeleton</title>
+    <meta charset='utf-8'>
+    <link href=data:, rel=icon>
+
+    <script src='https://unpkg.com/vue@next' defer></script>
+    <script src='script.js' defer></script>
+
+    <style>
+        [v-cloak] {
+            display: none
+        }
+    </style>
+
+</head>
+
+<body>
+    <h1>Vue.js Intro</h1>
+
+    <div id='app' v-cloak>
+        <label>Enter List Item <input type='text' v-model='newItemName'></label>
+
+        <button v-on:click='addToList'>Add To List</button>
+
+        <ul>
+            <li v-for="item in list" :key="item">{{ item }}</li>
+        </ul>
+
+        <p v-if='list.length > 0'>List Has {{list.length}} items </p>
+        </p>
+
+    </div>
+</body>
+
+</html>
