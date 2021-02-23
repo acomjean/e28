@@ -7,7 +7,7 @@
     <link href=data:, rel=icon>
 
     <script src='https://unpkg.com/vue@next' defer></script>
-    <script src='script.js' defer></script>
+    <script src='shopping_script.js' defer></script>
 
     <style>
         [v-cloak] {
@@ -21,7 +21,8 @@
     <h1>Vue.js Intro</h1>
 
     <div id='app' v-cloak>
-        <label>Enter List Item <input type='text' v-model='newItemName'></label>
+        <label>Qnty <input type='number' v-model='itemQuantity'></label>
+        <label>Item <input type='text' v-model='newItemName'></label>
 
         <button v-on:click='addToList'>Add To List</button>
         <!--
@@ -32,10 +33,13 @@
         <p></p>
         {{list}}
         <ul>
-            <li v-for="item in list" :key="item">{{ item }}</li>
+            <li v-for="oneItem, key, index in list">
+                <button v-on:click="removeFromList(oneItemindex,  $event)">X</button>
+                {{oneItem.index}} {{oneItem.quantity}} - {{ oneItem.item }}
+            </li>
         </ul>
 
-        <p v-if='list.length > 3'>List Has {{list.length}} items </p>
+        <p v-if='list.length >0'>List Has {{list.length}} items </p>
 
 
 
