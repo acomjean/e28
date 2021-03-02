@@ -21,8 +21,8 @@
     <h1>Vue.js Intro</h1>
 
     <div id='app' v-cloak>
-        <label>Qnty <input type='number' v-model='itemQuantity'></label>
-        <label>Item <input type='text' v-model='newItemName'></label>
+        <label>Qnty <input type='number' v-model.number='itemQuantity'></label>
+        <label>Item <input type='text' v-model='newItemName' v-on.keyup.enter='addToList'></label>
 
         <button v-on:click='addToList'>Add To List</button>
         <!--
@@ -32,6 +32,13 @@
 -->
         <p></p>
         {{list}}
+        <div v-if='totalItems === 0'>
+            You have no items on your list.
+        </div>
+        <div v-else>
+            You have {{totalItems}} items on your list.
+        </div>
+
         <ul>
             <li v-for="oneItem, key, index in list">
                 <button v-on:click="removeFromList(oneItemindex,  $event)">X</button>

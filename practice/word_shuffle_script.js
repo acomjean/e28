@@ -2,12 +2,30 @@
 const Game = {
     data() {
         return {
-            itemQuantity: 1,
-            newItemName: '',
-            list: [],
-            totalItems: 0
+            guesses: 1,
+            user: '',
+            word_shuffled: '',
+            word: ''
         }
     },
+    computed: {
+        word_shuffled() {
+            // https://stackoverflow.com/questions/3943772/how-do-i-shuffle-the-characters-in-a-string-in-javascript
+            var wordarray = this.split(""),
+                n = wordarray.length;
+
+
+            for (var i = n - 1; i > 0; i--) {
+                var j = Math.floor(Math.random() * (i + 1));
+                var tmp = wordarray[i];
+                wordarray[i] = wordarray[j];
+                wordarray[j] = tmp;
+            }
+            return wordarray.join("");
+        }
+    }
+
+
     methods: {
         addToList() {
 
