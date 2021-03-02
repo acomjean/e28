@@ -2,18 +2,26 @@
 const Game = {
     data() {
         return {
-            guesses: 1,
-            user: '',
-            word_shuffled: '',
-            word: ''
+            guess: 0,
+            word: '',
+            name: '',
+            previous_word: '',
+            state: "get_name",
+            guess_word: '',
+            correct: true
         }
     },
     computed: {
-        word_shuffled() {
-            // https://stackoverflow.com/questions/3943772/how-do-i-shuffle-the-characters-in-a-string-in-javascript
-            var wordarray = this.split(""),
-                n = wordarray.length;
+        fullName() {
+            return this.firstName + ' ' + this.lastName;
+        },
 
+
+        word_shuffled() {
+            console.log("wordarray");
+            // https://stackoverflow.com/questions/3943772/how-do-i-shuffle-the-characters-in-a-string-in-javascript
+            var wordarray = this.word.split(""),
+                n = wordarray.length;
 
             for (var i = n - 1; i > 0; i--) {
                 var j = Math.floor(Math.random() * (i + 1));
@@ -23,30 +31,37 @@ const Game = {
             }
             return wordarray.join("");
         }
-    }
-
-
+    },
     methods: {
-        addToList() {
+        startGame() {
+            this.guess = 1;
+            console.log("Start Game");
+            this.word = "house";
+            this.state = "started";
+            this.correct = false;
 
-            // Note how data newItemName are accessed via `this`
-            if (this.newItemName.length > 0) {
-                this.totalItems +=
-                    this.list.push({ quantity: this.itemQuantity, item: this.newItemName });
-                this.newItemName = '';
-                this.itemQuantity = 1;
+        },
+
+        checkGuess() {
+
+            console.log("check:" + this.guess_word + " - " + this.word)
+            if (this.guess_word == this.word) {
+                console.log("RIGHT");
+                this.feedbackClass = 'right';
+                this.correct = true;
+                //this.state = "stop"
+
+            } else {
+                console.log("wrong");
+
+                this.feedbackClass = 'wrong';
+                this.guess += 1;
+                this.correct = false;
 
             }
-        },
-        removeFromList(index, e) {
-            // Splice to remove array element
-            // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice
-            this.list.splice(index, 1);
 
         }
-
     }
-
 
 }
 

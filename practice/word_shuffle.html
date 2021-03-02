@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link href=data:, rel=icon>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src='https://unpkg.com/vue@next' defer></script>
+    <script src='word_shuffle_script.js' defer></script>
+
+    <style>
+        [v-cloak] {
+            display: none
+        }
+
+        body {
+            font-family: Helvetica;
+
+
+        }
+
+        .wrong {
+            color: red;
+        }
+
+        .right {
+            color: green;
+        }
+    </style>
+
+
+
+</head>
+
+<body>
+
+    <h1>Word Scramble</h1>
+
+
+    <div id='app' v-cloak>
+
+        <div v-if='guess == 0'>
+            <label>name: <input type='text' v-model='name' v-on:keyup.enter='startGame'> </label>
+            <button v-on:click='startGame'>Start Game</button>
+        </div>
+
+        <div v-if='state=="started"' id="game_div">
+            <p>
+
+                Lets Play a game {{ name }} ! <br>
+                hint: {{word}} <br>
+                word: {{word_shuffled}}<br>
+                Guess: {{guess}}<br>
+                <label>Guess <input type='text' v-model='guess_word' v-on:keyup.enter='checkGuess'></label>
+                <button v-on:click='checkGuess'>Add To List</button>
+
+            <div v-if='guess >= 2' class='feedback' v-bind:class='feedbackClass'>
+                <p v-if='correct'>Good work - {{ guess_word }} is the correct answer!</p>
+                <p v-else>{{ guess_word }} is not the correct answer; please try again.</p>
+            </div>
+
+            </p>
+
+        </div>
+    </div>
+
+    <p></p>
+
+
+</body>
+
+</html>
