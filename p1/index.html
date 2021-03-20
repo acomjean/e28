@@ -2,7 +2,7 @@
 <html lang='en'>
 
 <head>
-    <title>Vue.js P1 Skeleton</title>
+    <title>Vue.js P1 </title>
     <meta charset='utf-8'>
     <link href=data:, rel=icon>
 
@@ -18,21 +18,50 @@
 </head>
 
 <body>
-    <h1>Vue.js Intro</h1>
+    <h1>Prisoners Dilema </h1>
 
-    <div id='app' v-cloak>
-        <label>Enter List Item <input type='text' v-model='newItemName'></label>
 
-        <button v-on:click='addToList'>Add To List</button>
+    <div id='app' k>
 
-        <ul>
-            <li v-for="item in list" :key="item">{{ item }}</li>
-        </ul>
+        <div v-if='game_state == "starting"'>
+            <h2> Prisoner's Dilema Gane</h2>
+            <label>What is your name: <input type='text' v-model='name' v-on:keyup.enter='startGame'> </label>
+            <button v-on:click='startGame'>Start Game</button>
+        </div>
 
-        <p v-if='list.length > 0'>List Has {{list.length}} items </p>
-        </p>
 
+
+
+        <div v-if='game_state == "started"' id='history'>
+            <h2>Game history</h2>
+            <round-detail v-for='round in rounds' v-bind:key='round.number' v-bind:number='round.number'
+                v-bind:winner='round.winner' v-bind:choice='round.choice' v-on:delete-round='deleteRound($event)'>
+
+                <template v-slot:coin>The coin landed on {{ round.coin }}</template>
+            </round-detail>
+        </div>
     </div>
+
+
+
+
+
+    <!--  COMPONENTS --->
+
+
+    <script id='round-detail' type='text/x-template'>
+        <div>
+            <ul>
+                <li>Round #: {{ number }}</li>
+                <li>Winner: {{ winner }}</li>
+                <li><slot name='coin'></slot></li>
+                <li>The player's choice was {{ choice }}</li>
+            </ul>
+            <button v-on:click='$emit("delete-round", number)'>Delete from history</button>
+        </div>
+    </script>
+
+
 </body>
 
 </html>
