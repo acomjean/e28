@@ -21,9 +21,9 @@
     <h1>Prisoners Dilema </h1>
 
 
-    <div id='app' k>
+    <div id='app' v-cloak>
 
-        <div v-if='game_state == "starting"'>
+        <div v-if='gameState == "beginning"'>
             <h2> Prisoner's Dilema Gane</h2>
             <label>What is your name: <input type='text' v-model='name' v-on:keyup.enter='startGame'> </label>
             <button v-on:click='startGame'>Start Game</button>
@@ -32,13 +32,24 @@
 
 
 
-        <div v-if='game_state == "started"' id='history'>
-            <h2>Game history</h2>
-            <round-detail v-for='round in rounds' v-bind:key='round.number' v-bind:number='round.number'
-                v-bind:winner='round.winner' v-bind:choice='round.choice' v-on:delete-round='deleteRound($event)'>
+        <div v-if='gameState == "started"' id='game-history'>
 
-                <template v-slot:coin>The coin landed on {{ round.coin }}</template>
-            </round-detail>
+            <h2> Prisoners Dilema</a>
+
+
+
+
+
+                <h2>Game history</h2>
+                <button v-on:click='takeTurn("C")' id='cooperateButton' class="gameButton">Cooperate</button>
+                <button v-on:click='takeTurn("D")' id='deffectButton' class="gameButton"> Defect (Don't
+                    Cooperate)</button>
+
+                <round-detail v-for='round in rounds' v-bind:key='round.number' v-bind:number='round.number'
+                    v-bind:winner='round.winner' v-bind:choice='round.choice' v-on:delete-round='deleteRound($event)'>
+
+                    <template v-slot:coin>The coin landed on {{ round.coin }}</template>
+                </round-detail>
         </div>
     </div>
 
