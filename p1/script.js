@@ -2,15 +2,11 @@
 const Game = {
     data() {
         return {
-            name: "",
-            gameHistory: [
-                { number: 1, winner: 'Player', coin: 'heads', choice: 'heads' },
-                { number: 2, winner: 'Computer', coin: 'tails', choice: 'heads' },
-                { number: 3, winner: 'Computer', coin: 'heads', choice: 'tails' },
-                { number: 4, winner: 'Player', coin: 'tails', choice: 'tails' },
-            ],
-            gameState: "beginning",
-            gameNumber: 0,
+            name: "Aram",
+            gameDetails: [],
+            gameState: "started",
+            gameTurn: 1,
+            gameNumber: 1,   // you can play multiple games against various opponents
             scoreUser: 0,
             scoreComputer: 0
         }
@@ -30,6 +26,7 @@ const Game = {
             this.guess = 1;
             this.gameRounds = [];
             this.gameState = "started";
+            this.gameDetails = [];
 
         },
 
@@ -43,7 +40,7 @@ const Game = {
             let scoreComputer = this.scoreComputer;
 
             computerMove = "C";
-            this.gameNumber += 1;
+
             switch (userMove) {
                 case 'C':
                     if (computerMove == "C") {
@@ -72,6 +69,36 @@ const Game = {
             console.log('compuiter:' + scoreComputer + " User score " + scoreUser)
             this.scoreComputer = scoreComputer;
             this.scoreUser = scoreUser;
+
+            // Store move in History:
+
+
+            this.gameDetails.push({
+                turn: this.gameTurn,
+                humanMove: userMove,
+                computerMove: computerMove,
+                humanTurnScore: scoreUser,
+                computerTurnScore: scoreComputer,
+                humanTotal: this.scoreUser,
+                computerTotal: this.scoreComputer
+            }
+            );
+
+
+
+            this.gameTurn += 1;
+
+
+
+            // check if game is over (8.. hard coded..)
+            if (this.gameTurn > 8) {
+                this.gameNumber += 1;
+                this.gameState = "gameOver";
+            }
+
+
+
+
         }
 
 
@@ -82,30 +109,38 @@ const Game = {
 
 
 
-const RoundDetail = {
-    name: 'RoundDetail',
+const TurnDetail = {
+    name: 'TurnDetail',
     props: {
-        number: {
+        turn: {
             type: Number,
             default: 0
         },
-        winner: {
+        humanMove: {
             type: String
         },
-        choice: {
+        computerMove: {
             type: String
+        },
+        humanTurnScore: {
+            type: Number,
+        },
+        computerTurnScore: {
+            type: Number,
         }
     },
+
+
     data() {
         return {
         }
     },
-    template: '#round-detail'
+    template: '#turn-detail'
 }
 
 // Root Vue instance
 // 
 const app = Vue.createApp(Game)
-app.component('round-detail', RoundDetail);
+app.component('turn-detail', TurnDetail);
 app.mount('#app');
 

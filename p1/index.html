@@ -33,6 +33,7 @@
 
 
         <div v-if='gameState == "started"' id='game-history'>
+            <button v-on:click='startGame'>Start Game</button>
 
             <h2> Prisoners Dilema</a>
 
@@ -40,17 +41,35 @@
 
 
 
-                <h2>Game history</h2>
+
                 <button v-on:click='takeTurn("C")' id='cooperateButton' class="gameButton">Cooperate</button>
                 <button v-on:click='takeTurn("D")' id='deffectButton' class="gameButton"> Defect (Don't
                     Cooperate)</button>
 
-                <round-detail v-for='round in rounds' v-bind:key='round.number' v-bind:number='round.number'
-                    v-bind:winner='round.winner' v-bind:choice='round.choice' v-on:delete-round='deleteRound($event)'>
+                <h2>Round History</h2>
 
-                    <template v-slot:coin>The coin landed on {{ round.coin }}</template>
-                </round-detail>
+                <!-- Loop through and display Turn History-->
+
+                <turn-detail v-for='oneTurn in gameDetails' v-bind:key='oneTurn.number' v-bind:turn='oneTurn.turn'
+                    v-bind:human-move='oneTurn.humanMove' v-bind:computer-move='oneTurn.computerMove'
+                    v-bind:human-turn-score='oneTurn.humanTurnScore'
+                    v-bind:computer-turn-score='oneTurn.computerTurnScore' v-on:delete-round='deleteRound($event)'>
+
+                    <template v-slot:coin>The coin landed on {{ oneTurn.comuterMove }}</template>
+                </turn-detail>
         </div>
+
+
+        <div v-if='gameState == "gameOver"' id='game-results'>
+
+
+            <h2>GameOver</h2>
+
+
+
+        </div>
+
+
     </div>
 
 
@@ -60,15 +79,19 @@
     <!--  COMPONENTS --->
 
 
-    <script id='round-detail' type='text/x-template'>
+    <script id='turn-detail' type='text/x-template'>
         <div>
-            <ul>
-                <li>Round #: {{ number }}</li>
-                <li>Winner: {{ winner }}</li>
+            <ul style="list-style: none">
+                <li>Turn #: {{ turn }}</li>
+                <li>Your Move: {{ humanMove }}</li>
+                <li>Computer Move: {{ computerMove }}</li>
+                <li>Your Score: {{ humanTurnScore }}</li>
+                <li>Computer score: {{ computerTurnScore }}</li>
+
+
                 <li><slot name='coin'></slot></li>
-                <li>The player's choice was {{ choice }}</li>
             </ul>
-            <button v-on:click='$emit("delete-round", number)'>Delete from history</button>
+            <button v-on:click='$emit("delete-round", turn)'>Delete from history</button>
         </div>
     </script>
 
