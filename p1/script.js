@@ -8,7 +8,9 @@ const Game = {
             gameTurn: 1,
             gameNumber: 1,   // you can play multiple games against various opponents
             scoreUser: 0,
-            scoreComputer: 0
+            scoreComputer: 0,
+            computerOppents :[]
+
         }
     },
 
@@ -30,8 +32,10 @@ const Game = {
 
         },
 
-        deleteRound(number) {
-            this.rounds = this.rounds.filter(round => round.number != number);
+        goBackToRound(turn) {
+            console.log("turn" + turn);
+            this.gameDetails = this.gameDetails.filter(oneTurn => oneTurn.turn < turn);
+            this.gameTurn = turn;
         },
 
         takeTurn(userMove) {

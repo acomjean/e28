@@ -13,6 +13,45 @@
         [v-cloak] {
             display: none
         }
+
+        /* Tables from https://css-tricks.com/complete-guide-table-element/ */
+        table {
+            border-collapse: collapse;
+        }
+
+        td,
+        th {
+            border: 1px solid #999;
+            padding: 0.5rem;
+            text-align: left;
+        }
+
+        table tbody tr:nth-child(2n) td {
+            background: #D4D8F9;
+        }
+
+        /*https://codepen.io/GGCDMBit/pen/MONZPe*/
+
+        .table {
+            display: table;
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table-row {
+            display: table-row;
+        }
+
+        .table-cell,
+        .table-head {
+            display: table-cell;
+            padding: 1em;
+            border: #f0f0f0 1px solid;
+        }
+
+        .table-head {
+            font-weight: bold;
+        }
     </style>
 
 </head>
@@ -50,13 +89,35 @@
 
                 <!-- Loop through and display Turn History-->
 
-                <turn-detail v-for='oneTurn in gameDetails' v-bind:key='oneTurn.number' v-bind:turn='oneTurn.turn'
-                    v-bind:human-move='oneTurn.humanMove' v-bind:computer-move='oneTurn.computerMove'
-                    v-bind:human-turn-score='oneTurn.humanTurnScore'
-                    v-bind:computer-turn-score='oneTurn.computerTurnScore' v-on:delete-round='deleteRound($event)'>
 
-                    <template v-slot:coin>The coin landed on {{ oneTurn.comuterMove }}</template>
-                </turn-detail>
+
+                <table v-if='gameDetails.length>=1'>
+                    <thead>
+                        <tr>
+                            <th>Turn</th>
+                            <th>Your Move</th>
+                            <th>Computer Move</th>
+                            <th>Your Score</th>
+                            <th>Computer Score</th>
+                            <th>Your Game Score</th>
+                            <th>Computer Game Score</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+
+
+
+
+
+                        <turn-detail v-for='oneTurn in gameDetails' v-bind:key='oneTurn.number'
+                            v-bind:turn='oneTurn.turn' v-bind:human-move='oneTurn.humanMove'
+                            v-bind:computer-move='oneTurn.computerMove' v-bind:human-turn-score='oneTurn.humanTurnScore'
+                            v-bind:computer-turn-score='oneTurn.computerTurnScore'
+                            v-on:goback-round='goBackToRound($event)'>
+                    </tbody>
+                </table>
+
         </div>
 
 
@@ -80,19 +141,14 @@
 
 
     <script id='turn-detail' type='text/x-template'>
-        <div>
-            <ul style="list-style: none">
-                <li>Turn #: {{ turn }}</li>
-                <li>Your Move: {{ humanMove }}</li>
-                <li>Computer Move: {{ computerMove }}</li>
-                <li>Your Score: {{ humanTurnScore }}</li>
-                <li>Computer score: {{ computerTurnScore }}</li>
-
-
-                <li><slot name='coin'></slot></li>
-            </ul>
-            <button v-on:click='$emit("delete-round", turn)'>Delete from history</button>
-        </div>
+        <tr>
+                <td>Turn #: {{ turn }}</td>
+                <td>Your Move: {{ humanMove }}</td>
+                <td>Computer Move: {{ computerMove }}</td>
+                <td>Your Score: {{ humanTurnScore }}</td>
+                <td>Computer score: {{ computerTurnScore }}</td>
+                <td><button v-on:click='$emit("goback-round", turn)'>Start over from this round</button></td>
+        </tr>
     </script>
 
 
