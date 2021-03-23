@@ -27,7 +27,7 @@
         }
 
         table tbody tr:nth-child(2n) td {
-            background: #D4D8F9;
+            background: #edeef3;
         }
     </style>
 
@@ -46,56 +46,7 @@
         </div>
 
 
-
-
-        <div v-if='gameState == "started"' id='game-history'>
-            <button v-on:click='startGame'>Start Game</button>
-
-            <h2> Prisoners Dilema</a>
-
-
-
-
-
-
-                <button v-on:click='takeTurn("C")' id='cooperateButton' class="gameButton">Cooperate</button>
-                <button v-on:click='takeTurn("D")' id='deffectButton' class="gameButton"> Defect (Don't
-                    Cooperate)</button>
-
-                <h2>Round History</h2>
-
-                <!-- Loop through and display Turn History-->
-
-
-
-                <table v-if='gameDetails.length>=1'>
-                    <thead>
-                        <tr>
-                            <th>Turn</th>
-                            <th>Your Move</th>
-                            <th>Computer Move</th>
-                            <th>Your Score</th>
-                            <th>Computer Score</th>
-                            <th>Your Game Score</th>
-                            <th>Computer Game Score</th>
-
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                        <!-- Tables are a exception for components...-->
-
-                        <tr v-is="'turn-detail'" v-for='oneTurn in gameDetails' v-bind:key='oneTurn.number'
-                            v-bind:turn='oneTurn.turn' v-bind:human-move='oneTurn.humanMove'
-                            v-bind:computer-move='oneTurn.computerMove' v-bind:human-turn-score='oneTurn.humanTurnScore'
-                            v-bind:computer-turn-score='oneTurn.computerTurnScore'
-                            v-on:goback-round='goBackToRound($event)'>
-                        </tr>
-                    </tbody>
-                </table>
-
-        </div>
-
+        <!-- Show game results when game is over.  Offer new match-->
 
         <div v-if='gameState == "gameOver"' id='game-results'>
 
@@ -105,6 +56,71 @@
 
 
         </div>
+
+
+
+
+        <!-- Once Game Starts Show Controls -->
+
+
+        <div v-if='gameState == "started" ' id='game-controls'>
+            <button v-on:click='startGame'>Start Game</button>
+
+            <h2> Prisoners Dilema</h2>
+
+
+            <!-- Show buttons if game state not over-->
+
+            <div v-if='gameState!="gameOver"'>
+                <button v-on:click=' takeTurn("C")' id='cooperateButton' class="gameButton">Cooperate</button>
+                <button v-on:click='takeTurn("D")' id='deffectButton' class="gameButton"> Defect (Don't
+                    Cooperate)</button>
+            </div>
+        </div>
+
+
+        <!--The Game History Table -->
+
+
+        <div v-if='gameDetails.length>=1' id='game-history'>
+
+            <h2>Round History</h2>
+
+            <!-- Loop through and display Turn History-->
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Turn</th>
+                        <th>{{name}}'s Move</th>
+                        <th>Computer Move</th>
+                        <th>{{name}}'s Score</th>
+                        <th>Computer Score</th>
+                        <th>{{name}}'s Game Score</th>
+                        <th>Computer Game Score</th>
+                        <th>Reset To Round</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <!-- Tables are a exception for components...thus the v-is construct-->
+
+                    <tr v-is="'turn-detail'" v-for='oneTurn in gameDetails.slice().reverse()'
+                        v-bind:key='oneTurn.number' v-bind:turn='oneTurn.turn' v-bind:human-move='oneTurn.humanMove'
+                        v-bind:computer-move='oneTurn.computerMove' v-bind:human-turn-score='oneTurn.humanTurnScore'
+                        v-bind:computer-turn-score='oneTurn.computerTurnScore'
+                        v-bind:human-game-score='oneTurn.humanGameScore'
+                        v-bind:computer-game-score='oneTurn.computerGameScore'
+                        v-on:goback-round='goBackToRound($event)'>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+
+
 
 
     </div>
@@ -118,12 +134,14 @@
 
     <script id='turn-detail' type='text/x-template'>
              <tr>
-                <td>Turn #: {{ turn }}</td>
-                <td>Your Move: {{ humanMove }}</td>
-                <td>Computer Move: {{ computerMove }}</td>
-                <td>Your Score: {{ humanTurnScore }}</td>
-                <td>Computer score: {{ computerTurnScore }}</td>
-                <td><button v-on:click='$emit("goback-round", turn)'>Start over from this round</button></td>
+                <td> {{ turn }}</td>
+                <td><b> {{ humanMove }}</b></td>
+                <td> {{ computerMove }}</td>
+                <td><b>{{ humanTurnScore }}</b></td>
+                <td> {{ computerTurnScore }}</td>
+                <td><b> {{ humanGameScore }}</b></td>
+                <td> {{ computerGameScore }}</td>
+                <td><button v-on:click='$emit("goback-round", turn)'>Start over from turn {{ turn }}</button></td>
             
             </tr>
     </script>

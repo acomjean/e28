@@ -9,7 +9,7 @@ const Game = {
             gameNumber: 1,   // you can play multiple games against various opponents
             scoreUser: 0,
             scoreComputer: 0,
-            computerOppents :[]
+            computerOppents: []
 
         }
     },
@@ -40,10 +40,10 @@ const Game = {
 
         takeTurn(userMove) {
 
-            let scoreUser = this.scoreUser;
-            let scoreComputer = this.scoreComputer;
+            var scoreComputer = 0;
+            var scoreUser = 0;
 
-            computerMove = "C";
+            var computerMove = "C";
 
             switch (userMove) {
                 case 'C':
@@ -71,8 +71,8 @@ const Game = {
             }
 
             console.log('compuiter:' + scoreComputer + " User score " + scoreUser)
-            this.scoreComputer = scoreComputer;
-            this.scoreUser = scoreUser;
+            this.scoreComputer += scoreComputer;
+            this.scoreUser += scoreUser;
 
             // Store move in History:
 
@@ -83,8 +83,8 @@ const Game = {
                 computerMove: computerMove,
                 humanTurnScore: scoreUser,
                 computerTurnScore: scoreComputer,
-                humanTotal: this.scoreUser,
-                computerTotal: this.scoreComputer
+                humanGameScore: this.scoreUser,
+                computerGameScore: this.scoreComputer
             }
             );
 
@@ -131,7 +131,14 @@ const TurnDetail = {
         },
         computerTurnScore: {
             type: Number,
+        },
+        humanGameScore: {
+            type: Number,
+        },
+        computerGameScore: {
+            type: Number,
         }
+
     },
 
 
