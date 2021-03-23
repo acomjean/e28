@@ -3,14 +3,15 @@ const Game = {
     data() {
         return {
             name: "Aram",
-            gameDetails: [],
+            gameDetails: [],   // array of turn details 
             gameState: "started",
-            gameTurn: 1,
+            gameTurn: 1,     // turn #
             gameNumber: 1,   // you can play multiple games against various opponents
-            scoreUser: 0,
-            scoreComputer: 0,
-            computerOppents: [],
-            gameResults: []
+            scoreUser: 0,    // current game score
+            scoreComputer: 0,  //computers game score
+            computerOpponents: [{ id: 1, name: "Friendly" }, { id: 2, name: "Angry" }, { id: 3, name: "TFT" }, { id: 4, name: "grumpy" }],
+            computerOppenentIndex: 0,
+            gameResults: [] // summary of all games played
 
         }
     },
@@ -19,7 +20,7 @@ const Game = {
 
         // get id of computer algorithm
         oponentID() {
-            return 1;
+            return 3;
         },
 
         // Get the results of the last gamed played.
@@ -53,12 +54,44 @@ const Game = {
             this.gameTurn = turn;
         },
 
+        //Computer Move Calculator.. Returns C or D string
+        //
+        computerMove() {
+
+
+            if (this.oponentID == 1) {
+                return "C";
+            }
+
+            if (this.oponentID == 2) {
+                return "D";
+            }
+
+            if (this.oponentID == 3) {
+                if (this.gameTurn == 1) {
+                    return "C";
+                } else {
+                    let turnIndex = this.gameTurn - 1;
+                    console.log(turnIndex);
+                    return this.gameDetails[this.gameDetails.length - 1]['humanMove'];
+                }
+            }
+
+            if (this.oponentID == 4) {
+                let humanDefectsCount =0;
+                for (let i=0; i<)
+            }
+
+        },
+
+
+
         takeTurn(userMove) {
 
             var scoreComputer = 0;
             var scoreUser = 0;
 
-            var computerMove = "C";
+            var computerMove = this.computerMove();
 
             switch (userMove) {
                 case 'C':
