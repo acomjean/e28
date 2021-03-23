@@ -6,13 +6,16 @@ const Game = {
             gameDetails: [],   // array of turn details 
             gameState: "started",
             gameTurn: 1,     // turn #
+            maxTurns: 8,   //turns per game
             gameNumber: 1,   // you can play multiple games against various opponents
             scoreUser: 0,    // current game score
             scoreComputer: 0,  //computers game score
-            computerOpponents: [{ id: 1, name: "Friendly" }, { id: 2, name: "Angry" }, { id: 3, name: "TFT" }, { id: 4, name: "grumpy" }],
-            computerOppenentIndex: 3,
-            gameResults: [], // summary of all games played
-            moveicons: { C: '👍', D: '👎' }
+            computerOpponents: [{ id: 1, name: "Friendly" }, { id: 2, name: "Angry" }, { id: 3, name: "Tit-For-Tat" }, { id: 4, name: "Unforgiving" }],
+            computerOpponentIndex: 0,
+            computerOpponentsPlayed: [],
+            gameResults: [], // summary of all games played,
+
+            moveicons: { C: '✅️', D: '❌' }
 
         }
     },
@@ -35,22 +38,51 @@ const Game = {
 
     methods: {
 
-        startGame() {
-            this.guess = 1;
-            this.gameRounds = [];
+        // Reset
+        resetGame() {
+            this.gameState = "started";
+            this.gameDetails = [];
+            this.computerOpponentsPlayed =[];
+            this.gameTurn = 1;
+            this.scoreComputer = 0;
+            this.scoreUser = 0;
+            // get a random opponent
+            this.computerOpponentIndex = Math.floor(Math.random() * this.computerOpponents.length);
+        },
+
+
+        startNextGame() {
             this.gameState = "started";
             this.gameDetails = [];
             this.gameTurn = 1;
             this.scoreComputer = 0;
             this.scoreUser = 0;
-            // get a random opponent
-            this.computerOppenentIndex = Math.floor(Math.random() * this.computerOpponents.length);
+            // get a random opponent that you haven't played before.
+            // We have a list of algorithms played, so make an array of elligible indexes
+            // and pick one at random.
+            let unplayed = [];
+
+            for (let i=0; i < this.computerOpponents.length; i++){
+                console.log (this.computerOpponentsPlayed);
+
+                if (! this.computerOpponentsPlayed.includes(i)){
+                    console.log("adding unplayed " + i)
+                    unplayed.push(i)
+                }
+            }
+
+            // pick one of the uplayed algorithms in our array
+            this.computerOpponentIndex = unplayed[Math.floor(Math.random() * unplayed.length)];
         },
+
+
 
         goBackToRound(turn) {
             console.log("turn" + turn);
             this.gameDetails = this.gameDetails.filter(oneTurn => oneTurn.turn < turn);
             this.gameTurn = turn;
+            this.scoreUser = this.gameDetails[this.gameDetails.length - 1]['humanGameScore']
+            this.scoreComputer = this.gameDetails[this.gameDetails.length - 1]['computerGameScore']
         },
 
         //Computer Move Calculator.. Returns C or D string
@@ -58,15 +90,15 @@ const Game = {
         computerMove() {
 
 
-            if (this.computerOppenentIndex == 0) {
+            if (this.computerOpponentIndex == 0) {
                 return "C";
             }
 
-            if (this.computerOppenentIndex == 1) {
+            if (this.computerOpponentIndex == 1) {
                 return "D";
             }
 
-            if (this.computerOppenentIndex == 2) {
+            if (this.computerOpponentIndex == 2) {
                 if (this.gameTurn == 1) {
                     return "C";
                 } else {
@@ -76,7 +108,7 @@ const Game = {
                 }
             }
 
-            if (this.computerOppenentIndex == 3) {
+            if (this.computerOpponentIndex == 3) {
                 let humanDefectsCount = 0;
                 for (let i = 0; i < this.gameDetails.length; i++) {
                     if (this.gameDetails[i]['humanMove'] === 'D') {
@@ -84,7 +116,7 @@ const Game = {
                     }
                 }
                 // if the human has defected 2 or more times don't cooperate again
-                if (humanDefectsCount >= 2) {
+                if (humanDefectsCount >= 1) {
                     return "D";
                 } else {
                     return "C";
@@ -93,7 +125,7 @@ const Game = {
 
         },
 
-
+        // Process The Users turn
 
         takeTurn(userMove) {
 
@@ -131,8 +163,7 @@ const Game = {
             this.scoreComputer += scoreComputer;
             this.scoreUser += scoreUser;
 
-            // Store move in History:
-
+            // Store turn in History:
 
             this.gameDetails.push({
                 turn: this.gameTurn,
@@ -148,9 +179,9 @@ const Game = {
 
             this.gameTurn += 1;
 
-            // check if game is over (8.. hard coded..)
+            // check if game is over
 
-            if (this.gameTurn > 8) {
+            if (this.gameTurn >this.maxTurns) {
                 this.gameNumber += 1;
                 this.gameState = "gameOver";
 
@@ -168,24 +199,24 @@ const Game = {
                 }
 
                 this.gameResults.push({
-                    your_score: this.scoreUser, computerScore:
-                        this.scoreComputer, opponent_index: this.computerOppenentIndex,
+                    yourScore: this.scoreUser, computerScore:
+                        this.scoreComputer, opponentIndex: this.computerOpponentIndex,
                     result: outcome,
                     displayClass: displayClass
                 })
+                this.computerOpponentsPlayed.push (this.computerOpponentIndex)
+
+
+                // you've played all the algorithms.
+                if (this.computerOpponentsPlayed.length == this.computerOpponents.length){
+                    this.gameState="finished";
+
+                }
 
 
             }
-
-
-
-
         }
-
-
     }
-
-
 }
 
 
@@ -228,6 +259,11 @@ const TurnDetail = {
     },
     template: '#turn-detail'
 }
+
+
+
+
+
 
 // Root Vue instance
 // 

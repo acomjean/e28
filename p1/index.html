@@ -63,17 +63,35 @@
 
         <!-- Show game results when game is over.  Offer new match-->
 
-        <div v-if='gameState == "gameOver"' id='game-results'>
+        <div v-if='gameState=="gameOver" || gameState=="finished"' id='game-results'>
 
 
             <h2>GameOver!</h2>
 
             <h3> Results</h3>
+            <ul>
+                <li>Computer Algorithm Name : {{computerOpponents[lastGameResult.opponentIndex]['name']}} </li>
+                <li>Your Score : {{lastGameResult.yourScore}}</li>
+                <li>Opponent Score : {{lastGameResult.computerScore}}</li>
 
+
+            </ul>
             <div class='feedback' v-bind:class='lastGameResult.displayClass'>
                 Result: {{lastGameResult.result}}!
             </div>
-            <button v-on:click='startGame'>Start Game</button>
+
+
+            <div v-if='gameState=="gameOver"'>
+            <p> Play another game against a different Algorithm?
+            <button v-on:click='startNextGame'>Start Next Game</button>
+            </p>
+            </div>
+            <div v-else id="tourney-over">
+                    <b> You've played all the algorithms!!  Thanks for playing</b>
+
+            </div>
+            <br/><br>
+            <button v-on:click='resetGame'>Reset Game</button>
 
         </div>
 
@@ -84,16 +102,16 @@
 
 
         <div v-if='gameState == "started" ' id='game-controls'>
-            <button v-on:click='startGame'>Start Game</button>
+            <button v-on:click='resetGame'>Start Game</button>
 
             <h2> Choose Your Move</h2>
 
 
             <!-- Show buttons if game state not over-->
 
-            <div v-if='gameState!="gameOver"'>
-                <button v-on:click=' takeTurn("C")' id='cooperateButton' class="gameButton">Cooperate</button>
-                <button v-on:click='takeTurn("D")' id='deffectButton' class="gameButton"> Defect (Don't
+            <div v-if='gameState=="started"'>
+                <button v-on:click=' takeTurn("C")' id='cooperateButton' class="gameButton">✅️Cooperate</button>
+                <button v-on:click='takeTurn("D")' id='deffectButton' class="gameButton"> ❌ Defect (Don't
                     Cooperate)</button>
             </div>
         </div>
@@ -127,8 +145,8 @@
                     <!-- Tables are a exception for components...thus the v-is construct-->
 
                     <tr v-is="'turn-detail'" v-for='oneTurn in gameDetails.slice().reverse()'
-                        v-bind:key='oneTurn.number' v-bind:turn='oneTurn.turn' v-bind:human-move='oneTurn.humanMove'
-                        v-bind:computer-move='oneTurn.computerMove' v-bind:human-turn-score='oneTurn.humanTurnScore'
+                        v-bind:key='oneTurn.number' v-bind:turn='oneTurn.turn' v-bind:human-move='moveicons[oneTurn.humanMove]'
+                        v-bind:computer-move='moveicons[oneTurn.computerMove]' v-bind:human-turn-score='oneTurn.humanTurnScore'
                         v-bind:computer-turn-score='oneTurn.computerTurnScore'
                         v-bind:human-game-score='oneTurn.humanGameScore'
                         v-bind:computer-game-score='oneTurn.computerGameScore' v-bind:game-state='gameState'
