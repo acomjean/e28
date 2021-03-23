@@ -10,18 +10,15 @@ const Game = {
             scoreUser: 0,    // current game score
             scoreComputer: 0,  //computers game score
             computerOpponents: [{ id: 1, name: "Friendly" }, { id: 2, name: "Angry" }, { id: 3, name: "TFT" }, { id: 4, name: "grumpy" }],
-            computerOppenentIndex: 0,
-            gameResults: [] // summary of all games played
+            computerOppenentIndex: 3,
+            gameResults: [], // summary of all games played
+            moveicons: { C: '👍', D: '👎' }
 
         }
     },
 
     computed: {
 
-        // get id of computer algorithm
-        oponentID() {
-            return 3;
-        },
 
         // Get the results of the last gamed played.
         lastGameResult() {
@@ -46,6 +43,8 @@ const Game = {
             this.gameTurn = 1;
             this.scoreComputer = 0;
             this.scoreUser = 0;
+            // get a random opponent
+            this.computerOppenentIndex = Math.floor(Math.random() * this.computerOpponents.length);
         },
 
         goBackToRound(turn) {
@@ -59,15 +58,15 @@ const Game = {
         computerMove() {
 
 
-            if (this.oponentID == 1) {
+            if (this.computerOppenentIndex == 0) {
                 return "C";
             }
 
-            if (this.oponentID == 2) {
+            if (this.computerOppenentIndex == 1) {
                 return "D";
             }
 
-            if (this.oponentID == 3) {
+            if (this.computerOppenentIndex == 2) {
                 if (this.gameTurn == 1) {
                     return "C";
                 } else {
@@ -77,9 +76,19 @@ const Game = {
                 }
             }
 
-            if (this.oponentID == 4) {
-                let humanDefectsCount =0;
-                for (let i=0; i<)
+            if (this.computerOppenentIndex == 3) {
+                let humanDefectsCount = 0;
+                for (let i = 0; i < this.gameDetails.length; i++) {
+                    if (this.gameDetails[i]['humanMove'] === 'D') {
+                        humanDefectsCount++;
+                    }
+                }
+                // if the human has defected 2 or more times don't cooperate again
+                if (humanDefectsCount >= 2) {
+                    return "D";
+                } else {
+                    return "C";
+                }
             }
 
         },
@@ -158,7 +167,12 @@ const Game = {
                     displayClass = "winner";
                 }
 
-                this.gameResults.push({ your_score: this.scoreUser, computerScore: this.scoreComputer, opponent_id: this.oponentID, result: outcome, displayClass: displayClass })
+                this.gameResults.push({
+                    your_score: this.scoreUser, computerScore:
+                        this.scoreComputer, opponent_index: this.computerOppenentIndex,
+                    result: outcome,
+                    displayClass: displayClass
+                })
 
 
             }
