@@ -9,7 +9,8 @@ const Game = {
             gameNumber: 1,   // you can play multiple games against various opponents
             scoreUser: 0,
             scoreComputer: 0,
-            computerOppents: []
+            computerOppents: [],
+            gameResults: []
 
         }
     },
@@ -19,17 +20,31 @@ const Game = {
         // get id of computer algorithm
         oponentID() {
             return 1;
+        },
+
+        // Get the results of the last gamed played.
+        lastGameResult() {
+            if (this.gameResults.length > 0) {
+                return this.gameResults[this.gameResults.length - 1];
+            } else {
+                return null;
+            }
+
         }
+
     },
 
 
     methods: {
+
         startGame() {
             this.guess = 1;
             this.gameRounds = [];
             this.gameState = "started";
             this.gameDetails = [];
-
+            this.gameTurn = 1;
+            this.scoreComputer = 0;
+            this.scoreUser = 0;
         },
 
         goBackToRound(turn) {
@@ -85,19 +100,34 @@ const Game = {
                 computerTurnScore: scoreComputer,
                 humanGameScore: this.scoreUser,
                 computerGameScore: this.scoreComputer
-            }
-            );
+            });
 
 
 
             this.gameTurn += 1;
 
-
-
             // check if game is over (8.. hard coded..)
+
             if (this.gameTurn > 8) {
                 this.gameNumber += 1;
                 this.gameState = "gameOver";
+
+                var outcome = '';
+                var displayClass = '';
+                if (this.scoreComputer > this.scoreUser) {
+                    outcome = "You Lost";
+                    displayClass = "lost";
+                } else if (this.scoreComputer === this.scoreUser) {
+                    outcome = "Tie";
+                    displayClass = "tie";
+                } else {
+                    outcome = "You Won";
+                    displayClass = "winner";
+                }
+
+                this.gameResults.push({ your_score: this.scoreUser, computerScore: this.scoreComputer, opponent_id: this.oponentID, result: outcome, displayClass: displayClass })
+
+
             }
 
 
@@ -137,6 +167,9 @@ const TurnDetail = {
         },
         computerGameScore: {
             type: Number,
+        },
+        gameState: {
+            type: String
         }
 
     },

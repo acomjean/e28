@@ -29,6 +29,20 @@
         table tbody tr:nth-child(2n) td {
             background: #edeef3;
         }
+
+        .winner {
+            color: green;
+            font-size: 3rem;
+        }
+
+        .tie {
+            color: rgb(134, 134, 134);
+            font-size: 2rem;
+        }
+
+        .lost {
+            color: red;
+            font-size: 1rem;
     </style>
 
 </head>
@@ -51,9 +65,14 @@
         <div v-if='gameState == "gameOver"' id='game-results'>
 
 
-            <h2>GameOver</h2>
+            <h2>GameOver!</h2>
 
+            <h3> Results</h3>
 
+            <div class='feedback' v-bind:class='lastGameResult.displayClass'>
+                Result: {{lastGameResult.result}}!
+            </div>
+            <button v-on:click='startGame'>Start Game</button>
 
         </div>
 
@@ -111,7 +130,7 @@
                         v-bind:computer-move='oneTurn.computerMove' v-bind:human-turn-score='oneTurn.humanTurnScore'
                         v-bind:computer-turn-score='oneTurn.computerTurnScore'
                         v-bind:human-game-score='oneTurn.humanGameScore'
-                        v-bind:computer-game-score='oneTurn.computerGameScore'
+                        v-bind:computer-game-score='oneTurn.computerGameScore' v-bind:game-state='gameState'
                         v-on:goback-round='goBackToRound($event)'>
                     </tr>
                 </tbody>
@@ -141,7 +160,7 @@
                 <td> {{ computerTurnScore }}</td>
                 <td><b> {{ humanGameScore }}</b></td>
                 <td> {{ computerGameScore }}</td>
-                <td><button v-on:click='$emit("goback-round", turn)'>Start over from turn {{ turn }}</button></td>
+                <td> <button v-if='gameState!="gameOver"' v-on:click='$emit("goback-round", turn)'>Redo from {{ turn }}</button></td>
             
             </tr>
     </script>
