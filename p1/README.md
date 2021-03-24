@@ -5,11 +5,11 @@
 
 ## Outside resources
 
-+ [game theory and Prisoner's Dilema] (https://en.wikipedia.org/wiki/Prisoner%27s_dilemma)
++ [game theory and Prisoner's Dilema](https://en.wikipedia.org/wiki/Prisoner%27s_dilemma)
 + [get button id in view](https://stackoverflow.com/questions/45978055/how-to-get-the-value-of-button-when-clicked-using-vue-js)
-+ [css table styling] (https://css-tricks.com/complete-guide-table-element/)
-+ [vue table handling](https://v3.vuejs.org/guide/component-basics.html#dom-template-parsing-caveats)
-+ [revsersing array in vue] (https://stackoverflow.com/questions/37638083/how-do-i-reverse-the-order-of-an-array-using-v-for-and-orderby-filter-in-vue-js)
++ [css table styling](https://css-tricks.com/complete-guide-table-element/)
++ [vue table handling dom parsing caveats](https://v3.vuejs.org/guide/component-basics.html#dom-template-parsing-caveats)
++ [revsersing array in vue](https://stackoverflow.com/questions/37638083/how-do-i-reverse-the-order-of-an-array-using-v-for-and-orderby-filter-in-vue-js)
 
 
 ## Notes for instructor
