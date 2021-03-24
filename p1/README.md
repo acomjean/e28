@@ -1,23 +1,24 @@
-** E28 Spring 2021 **
-#P1 Project 1 *
+# Project 1 E28 - Spring 2021
++ By: Aram Comjean
++ Production URL:  [http://e28p1.aramcomjean.com/](http://e28p1.aramcomjean.com/)
 
-**Author**
-Aram Comjean
 
 ## Outside resources
-na
-https://vuejs.org/v2/style-guide/#Private-property-names-essential
-https://en.wikipedia.org/wiki/Tit_for_tat
+na[Here’s a link in Markdown...](https://hesweb.dev)
+[game theory and Prisoner's Dilema] (https://en.wikipedia.org/wiki/Prisoner%27s_dilemma)
 
-https://stackoverflow.com/questions/45978055/how-to-get-the-value-of-button-when-clicked-using-vue-js
-https://css-tricks.com/complete-guide-table-element/
+[get button id in view](https://stackoverflow.com/questions/45978055/how-to-get-the-value-of-button-when-clicked-using-vue-js)
+[css table styling] (https://css-tricks.com/complete-guide-table-element/)
 
-#Tables don't work like they should
-https://v3.vuejs.org/guide/component-basics.html#dom-template-parsing-caveats
+[vue table handling](https://v3.vuejs.org/guide/component-basics.html#dom-template-parsing-caveats)
 
 #I want to show the last turn at the top
-https://stackoverflow.com/questions/37638083/how-do-i-reverse-the-order-of-an-array-using-v-for-and-orderby-filter-in-vue-js
+[revsersing array in vue] (https://stackoverflow.com/questions/37638083/how-do-i-reverse-the-order-of-an-array-using-v-for-and-orderby-filter-in-vue-js)
 
 
 ## Notes for instructor
-na
+I'm getting how this works, but am still struggling a little how the overall application should be structured. It seems like a big class, but I'm not comfortable
+yet.
+
+Tables don't work easily in view, unlike divs .  I thought a table would be appropriate for scoreing, so I after some digging I used the v-is tag.
+I should use more components. 
