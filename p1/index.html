@@ -17,13 +17,14 @@
         /* Tables from https://css-tricks.com/complete-guide-table-element/ */
         table {
             border-collapse: collapse;
+            font-family: "Permanent Marker";
         }
 
         td,
         th {
             border: 1px solid #999;
-            padding: 0.5rem;
-            text-align: left;
+            padding: 0.1;
+            text-align: center;
         }
 
         table tbody tr:nth-child(2n) td {
@@ -44,124 +45,199 @@
             color: red;
             font-size: 1rem;
         }
+
+        header {
+            background-color: rgb(173, 167, 202);
+            padding: 10px;
+            font-family: "Permanent Marker";
+        }
+
+
+        body {
+            background-color: #efefef;
+            margin: 10px;
+            padding: 20px;
+            font-family: "Open Sans", sans-serif;
+        }
+
+        .game {
+            margin-left: 10px;
+        }
+
+        .steps {
+            margin-left: 10px;
+        }
+
+        @media all and (min-width: 600px) {
+            .rowflex {
+                display: flex;
+                justify-content: space-between;
+                flex-wrap: wrap;
+            }
+
+            .game {
+                flex: 2;
+            }
+
+            .steps {
+                flex: 1;
+            }
+        }
+
+        .feedback {
+            font-family: "Permanent Marker";
+        }
     </style>
+
+    <link href="https://fonts.googleapis.com/css?family=Permanent+Marker|Open+Sans" rel="stylesheet">
 
 </head>
 
 <body>
-    <h1>Prisoners Dilema </h1>
+
+    <header>
+        <h1> E28 Project 1 </h1>
+        <h2>Prisoners Dillema</h2>
+        <h3>Aram Comjean - Spring 2021</h3>
+    </header>
 
 
-    <div id='app' v-cloak>
+    <div id='app' class="rowflex" v-cloak>
 
-        <div v-if='gameState == "beginning"'>
-            <h2> Prisoner's Dilema Gane</h2>
-            <label>What is your name: <input type='text' v-model='name' v-on:keyup.enter='startGame'> </label>
-            <button v-on:click='startGame'>Start Game</button>
-        </div>
+        <div class="game">
 
-
-        <!-- Show game results when game is over.  Offer new match-->
-
-        <div v-if='gameState=="gameOver" || gameState=="finished"' id='game-results'>
-
-
-            <h2>GameOver!</h2>
-
-            <h3> Results</h3>
-            <ul>
-                <li>Computer Algorithm Name : {{computerOpponents[lastGameResult.opponentIndex]['name']}} </li>
-                <li>Your Score : {{lastGameResult.yourScore}}</li>
-                <li>Opponent Score : {{lastGameResult.computerScore}}</li>
-
-
-            </ul>
-            <div class='feedback' v-bind:class='lastGameResult.displayClass'>
-                Result: {{lastGameResult.result}}!
+            <div v-if='gameState == "beginning"'>
+                <h2> Prisoner's Dilema Gane</h2>
+                <label>What is your name: <input type='text' v-model='name' v-on:keyup.enter='startGame'> </label>
+                <button v-on:click='startGame'>Start Game</button>
             </div>
 
 
-            <div v-if='gameState=="gameOver"'>
-            <p> Play another game against a different Algorithm?
-            <button v-on:click='startNextGame'>Start Next Game</button>
-            </p>
-            </div>
-            <div v-else id="tourney-over">
-                    <b> You've played all the algorithms!!  Thanks for playing</b>
+            <!-- Show game results when game is over.  Offer new match-->
+
+            <div v-if='gameState=="gameOver" || gameState=="finished"' id='game-results'>
+
+
+                <h3>GameOver! Results</h3>
+
+                <ul>
+                    <li>Computer Algorithm Name : {{computerOpponents[lastGameResult.opponentIndex]['name']}} </li>
+                    <li>Your Score : {{lastGameResult.yourScore}}</li>
+                    <li>Opponent Score : {{lastGameResult.computerScore}}</li>
+
+
+                </ul>
+                <div class='feedback' v-bind:class='lastGameResult.displayClass'>
+                    Result: {{lastGameResult.result}}!
+                </div>
+
+
+                <div v-if='gameState=="gameOver"'>
+                    <p> Play another game against a different Algorithm?<br>
+                        You've played {{ gameResults.length }} of {{ computerOpponents.length }}
+                        <button v-on:click='startNextGame'>Start Next Game</button>
+                    </p>
+                </div>
+                <div v-else id="tourney-over">
+                    <b> You've played all the algorithms!! Thanks for playing</b>
+
+                </div>
+                <br /><br>
+                <button v-on:click='resetGame'>Reset Game</button>
 
             </div>
-            <br/><br>
-            <button v-on:click='resetGame'>Reset Game</button>
+
+
+
+
+            <!-- Once Game Starts Show Controls -->
+
+
+            <div v-if='gameState == "started" ' id='game-controls'>
+                <button v-on:click='resetGame'>Start Game</button>
+
+                <h3> Choose Your Move</h3>
+
+
+                <!-- Show buttons if game state not over-->
+
+                <div v-if='gameState=="started"'>
+                    <p>
+                        Turn: {{ gameTurn }} of {{maxTurns}}
+
+                        <button v-on:click=' takeTurn("C")' id='cooperateButton' class="gameButton">✅️Cooperate</button>
+                        <button v-on:click='takeTurn("D")' id='deffectButton' class="gameButton"> ❌ Defect (Don't
+                            Cooperate)</button>
+                    </p>
+                </div>
+            </div>
+
+
+            <!--The Game History Table -->
+
+
+            <div v-if='gameDetails.length>=1' id='game-history'>
+
+                <h2>Round History</h2>
+
+                <!-- Loop through and display Turn History-->
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Turn</th>
+                            <th>{{name}}'s Move</th>
+                            <th>Computer Move</th>
+                            <th>{{name}}'s Score</th>
+                            <th>Computer Score</th>
+                            <th>{{name}}'s Game Score</th>
+                            <th>Computer Game Score</th>
+                            <th>Reset To Round</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <!-- Tables are a exception for components...thus the v-is construct-->
+
+                        <tr v-is="'turn-detail'" v-for='oneTurn in gameDetails.slice().reverse()'
+                            v-bind:key='oneTurn.number' v-bind:turn='oneTurn.turn'
+                            v-bind:human-move='moveicons[oneTurn.humanMove]'
+                            v-bind:computer-move='moveicons[oneTurn.computerMove]'
+                            v-bind:human-turn-score='oneTurn.humanTurnScore'
+                            v-bind:computer-turn-score='oneTurn.computerTurnScore'
+                            v-bind:human-game-score='oneTurn.humanGameScore'
+                            v-bind:computer-game-score='oneTurn.computerGameScore' v-bind:game-state='gameState'
+                            v-on:goback-round='goBackToRound($event)'>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
 
         </div>
 
+        <div class="steps">
+            <h3> Previous Games</h3>
 
+            <div v-for='oneGame in gameResults'>
+                <>{{oneGame.result}}<>
+                        <b>{{oneGame.result}}</b>
+                        Computer Algorithm: {{computerOpponents[oneGame.opponentIndex]['name']}}<br>
+                        Your Score {{oneGame.yourScore}}<br>
+                        Computer Score {{oneGame.ComputerScore}}<br>
 
-
-        <!-- Once Game Starts Show Controls -->
-
-
-        <div v-if='gameState == "started" ' id='game-controls'>
-            <button v-on:click='resetGame'>Start Game</button>
-
-            <h2> Choose Your Move</h2>
-
-
-            <!-- Show buttons if game state not over-->
-
-            <div v-if='gameState=="started"'>
-                <button v-on:click=' takeTurn("C")' id='cooperateButton' class="gameButton">✅️Cooperate</button>
-                <button v-on:click='takeTurn("D")' id='deffectButton' class="gameButton"> ❌ Defect (Don't
-                    Cooperate)</button>
             </div>
-        </div>
-
-
-        <!--The Game History Table -->
-
-
-        <div v-if='gameDetails.length>=1' id='game-history'>
-
-            <h2>Round History</h2>
-
-            <!-- Loop through and display Turn History-->
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>Turn</th>
-                        <th>{{name}}'s Move</th>
-                        <th>Computer Move</th>
-                        <th>{{name}}'s Score</th>
-                        <th>Computer Score</th>
-                        <th>{{name}}'s Game Score</th>
-                        <th>Computer Game Score</th>
-                        <th>Reset To Round</th>
-
-                    </tr>
-                </thead>
-                <tbody>
-
-                    <!-- Tables are a exception for components...thus the v-is construct-->
-
-                    <tr v-is="'turn-detail'" v-for='oneTurn in gameDetails.slice().reverse()'
-                        v-bind:key='oneTurn.number' v-bind:turn='oneTurn.turn' v-bind:human-move='moveicons[oneTurn.humanMove]'
-                        v-bind:computer-move='moveicons[oneTurn.computerMove]' v-bind:human-turn-score='oneTurn.humanTurnScore'
-                        v-bind:computer-turn-score='oneTurn.computerTurnScore'
-                        v-bind:human-game-score='oneTurn.humanGameScore'
-                        v-bind:computer-game-score='oneTurn.computerGameScore' v-bind:game-state='gameState'
-                        v-on:goback-round='goBackToRound($event)'>
-                    </tr>
-                </tbody>
-            </table>
 
         </div>
-
 
 
 
 
     </div>
+
+
+
 
 
 
