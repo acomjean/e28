@@ -2,9 +2,9 @@
 const Game = {
     data() {
         return {
-            name: "Aram",
+            name: "",
             gameDetails: [],   // array of turn details 
-            gameState: "started",
+            gameState: "beginning",
             gameTurn: 1,     // turn #
             maxTurns: 8,   //turns per game
             gameNumber: 1,   // you can play multiple games against various opponents
@@ -40,9 +40,10 @@ const Game = {
 
         // Reset
         resetGame() {
-            this.gameState = "started";
+            this.gameState = "beginning";
             this.gameDetails = [];
-            this.computerOpponentsPlayed =[];
+            this.gameResults = [];
+            this.computerOpponentsPlayed = [];
             this.gameTurn = 1;
             this.scoreComputer = 0;
             this.scoreUser = 0;
@@ -62,10 +63,10 @@ const Game = {
             // and pick one at random.
             let unplayed = [];
 
-            for (let i=0; i < this.computerOpponents.length; i++){
-                console.log (this.computerOpponentsPlayed);
+            for (let i = 0; i < this.computerOpponents.length; i++) {
+                console.log(this.computerOpponentsPlayed);
 
-                if (! this.computerOpponentsPlayed.includes(i)){
+                if (!this.computerOpponentsPlayed.includes(i)) {
                     console.log("adding unplayed " + i)
                     unplayed.push(i)
                 }
@@ -181,7 +182,7 @@ const Game = {
 
             // check if game is over
 
-            if (this.gameTurn >this.maxTurns) {
+            if (this.gameTurn > this.maxTurns) {
                 this.gameNumber += 1;
                 this.gameState = "gameOver";
 
@@ -204,12 +205,12 @@ const Game = {
                     result: outcome,
                     displayClass: displayClass
                 })
-                this.computerOpponentsPlayed.push (this.computerOpponentIndex)
+                this.computerOpponentsPlayed.push(this.computerOpponentIndex)
 
 
                 // you've played all the algorithms.
-                if (this.computerOpponentsPlayed.length == this.computerOpponents.length){
-                    this.gameState="finished";
+                if (this.computerOpponentsPlayed.length == this.computerOpponents.length) {
+                    this.gameState = "finished";
 
                 }
 

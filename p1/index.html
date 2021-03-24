@@ -2,7 +2,7 @@
 <html lang='en'>
 
 <head>
-    <title>Vue.js P1 </title>
+    <title>E28 Spring 2021 P1 </title>
     <meta charset='utf-8'>
     <link href=data:, rel=icon>
 
@@ -65,7 +65,39 @@
         }
 
         .steps {
-            margin-left: 10px;
+            font-family: "Permanent Marker";
+            margin: 10px;
+        }
+
+        .steps-gamedisplay {
+            border: 1px solid black;
+            padding: 15px;
+        }
+
+        .game-done {
+            font-family: "Permanent Marker";
+            font-size: 3rem;
+        }
+
+        .game-button {
+            font: "Permanent Marker";
+            ;
+            margin: 10px;
+            padding: 0.85em 1em;
+            padding-top: 0.7em;
+            padding-right: 1em;
+            padding-bottom: 0.7em;
+            padding-left: 1em;
+            border: 1px solid black;
+            transition: background-color 0.25s ease-out, color 0.25s ease-out;
+            border-radius: 5px;
+            background-color: #b2b3f3;
+            color: hsl(240, 78%, 2%);
+            box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .game-button:hover {
+            background: #7578f9;
         }
 
         @media all and (min-width: 600px) {
@@ -93,6 +125,9 @@
 
 </head>
 
+
+
+
 <body>
 
     <header>
@@ -104,15 +139,59 @@
 
     <div id='app' class="rowflex" v-cloak>
 
+
+
+
+        <div v-if='gameState == "beginning"'>
+
+            <p>
+                Based on the <a href="https://en.wikipedia.org/wiki/Prisoner%27s_dilemma">"Prisoner's Dilemma"</a>
+                In this game the goal is to score more than your opponent and maximize your score.
+                Each Turn you will choose to ✅️Cooperate or ❌ Defect.
+                The score you receive is based on your acion and the action of your opponent.
+            </p>
+            <p> This game contains 4 different computer algorthims to play against, picked at random. </p>
+
+
+            <h3> Scoring Matrix</h3>
+
+            <table border="1" width="50%" cellspacing="0">
+                <tbody>
+                    <tr>
+                        <td colspan="2" rowspan="2" bordercolorlight="#FFFFFF" bordercolordark="#FFFFFF">&nbsp;</td>
+                        <td align="center" colspan="2"><b>User Move</b></td>
+                    </tr>
+                    <tr>
+                        <td align="center">✅️Cooperate</td>
+                        <td align="center">❌ Defect </td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2"><b>Computer<br>
+                                &nbsp;Move</b></td>
+                        <td>✅️Cooperate</td>
+                        <td align="center" bgcolor="#C0C0C0"><b>3</b>/3</td>
+                        <td width="20%" align="center" bgcolor="#C0C0C0"><b>4</b>/1</td>
+                    </tr>
+                    <tr>
+                        <td>❌ Defect </td>
+                        <td align="center" bgcolor="#C0C0C0"><b>1</b>/4</td>
+                        <td align="center" bgcolor="#C0C0C0"><b>2</b>/2</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <br>
+            <h3>To Start</h3>
+
+            <label>Please enter your name: <input type='text' v-model='name' v-on:keyup.enter='startGame'> </label>
+            <button v-on:click='startNextGame' class="game-button">Start Game</button>
+        </div>
+        <div v-else style="width: 100%">
+            <button v-on:click='resetGame' class="game-button" style="float:right">Reset Game</button>
+
+        </div>
+
         <div class="game">
-
-            <div v-if='gameState == "beginning"'>
-                <h2> Prisoner's Dilema Gane</h2>
-                <label>What is your name: <input type='text' v-model='name' v-on:keyup.enter='startGame'> </label>
-                <button v-on:click='startGame'>Start Game</button>
-            </div>
-
-
             <!-- Show game results when game is over.  Offer new match-->
 
             <div v-if='gameState=="gameOver" || gameState=="finished"' id='game-results'>
@@ -135,15 +214,14 @@
                 <div v-if='gameState=="gameOver"'>
                     <p> Play another game against a different Algorithm?<br>
                         You've played {{ gameResults.length }} of {{ computerOpponents.length }}
-                        <button v-on:click='startNextGame'>Start Next Game</button>
+                        <button v-on:click='startNextGame' class="game-button">Start Next Game</button>
                     </p>
                 </div>
-                <div v-else id="tourney-over">
-                    <b> You've played all the algorithms!! Thanks for playing</b>
-
+                <div v-else id="tourney-over" class="game-done">
+                    <b> You've played all the algorithms!! Thanks for playing!</b>
+                    <button v-on:click='resetGame' class="game-button">Reset Game</button>
                 </div>
-                <br /><br>
-                <button v-on:click='resetGame'>Reset Game</button>
+
 
             </div>
 
@@ -154,9 +232,8 @@
 
 
             <div v-if='gameState == "started" ' id='game-controls'>
-                <button v-on:click='resetGame'>Start Game</button>
 
-                <h3> Choose Your Move</h3>
+                <h3> Choose Your Move {{name}}</h3>
 
 
                 <!-- Show buttons if game state not over-->
@@ -165,8 +242,9 @@
                     <p>
                         Turn: {{ gameTurn }} of {{maxTurns}}
 
-                        <button v-on:click=' takeTurn("C")' id='cooperateButton' class="gameButton">✅️Cooperate</button>
-                        <button v-on:click='takeTurn("D")' id='deffectButton' class="gameButton"> ❌ Defect (Don't
+                        <button v-on:click=' takeTurn("C")' id='cooperateButton'
+                            class="game-button">✅️Cooperate</button>
+                        <button v-on:click='takeTurn("D")' id='deffectButton' class="game-button"> ❌ Defect (Don't
                             Cooperate)</button>
                     </p>
                 </div>
@@ -217,16 +295,16 @@
 
         </div>
 
-        <div class="steps">
+        <div v-if='gameResults.length>=1' class="steps">
             <h3> Previous Games</h3>
 
-            <div v-for='oneGame in gameResults'>
-                <>{{oneGame.result}}<>
-                        <b>{{oneGame.result}}</b>
-                        Computer Algorithm: {{computerOpponents[oneGame.opponentIndex]['name']}}<br>
-                        Your Score {{oneGame.yourScore}}<br>
-                        Computer Score {{oneGame.ComputerScore}}<br>
-
+            <div v-for='(oneGame, index) in gameResults' class="steps-gamedisplay">
+                <p>
+                    {{oneGame.result}}<br>
+                    Computer Algorithm: {{computerOpponents[oneGame.opponentIndex]['name']}}<br>
+                    {{name}}'s' Score {{oneGame.yourScore}}<br>
+                    Computer Score {{oneGame.computerScore}}<br>
+                </p>
             </div>
 
         </div>
