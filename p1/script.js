@@ -59,16 +59,15 @@ const Game = {
             this.gameTurn = 1;
             this.scoreComputer = 0;
             this.scoreUser = 0;
+
             // get a random opponent that you haven't played before.
             // We have a list of algorithms played, so make an array of elligible indexes
             // and pick one at random.
             let unplayed = [];
 
             for (let i = 0; i < this.computerOpponents.length; i++) {
-                console.log(this.computerOpponentsPlayed);
 
                 if (!this.computerOpponentsPlayed.includes(i)) {
-                    console.log("adding unplayed " + i)
                     unplayed.push(i)
                 }
             }
@@ -80,7 +79,7 @@ const Game = {
         // Let the user undo
 
         goBackToRound(turn) {
-            console.log("turn" + turn);
+
             this.gameDetails = this.gameDetails.filter(oneTurn => oneTurn.turn < turn);
             this.gameTurn = turn;
             this.scoreUser = this.gameDetails[this.gameDetails.length - 1]['humanGameScore']
@@ -90,7 +89,6 @@ const Game = {
         //Computer Move Calculator.. Returns C or D string
 
         computerMove() {
-
 
             if (this.computerOpponentIndex == 0) {
                 return "C";
@@ -105,7 +103,6 @@ const Game = {
                     return "C";
                 } else {
                     let turnIndex = this.gameTurn - 1;
-                    console.log(turnIndex);
                     return this.gameDetails[this.gameDetails.length - 1]['humanMove'];
                 }
             }
@@ -161,7 +158,6 @@ const Game = {
                     console.log('err')
             }
 
-            console.log('compuiter:' + scoreComputer + " User score " + scoreUser)
             this.scoreComputer += scoreComputer;
             this.scoreUser += scoreUser;
 
