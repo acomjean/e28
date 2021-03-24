@@ -47,6 +47,7 @@ const Game = {
             this.gameTurn = 1;
             this.scoreComputer = 0;
             this.scoreUser = 0;
+            this.name = "";
             // get a random opponent
             this.computerOpponentIndex = Math.floor(Math.random() * this.computerOpponents.length);
         },
