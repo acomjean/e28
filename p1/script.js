@@ -76,7 +76,7 @@ const Game = {
             this.computerOpponentIndex = unplayed[Math.floor(Math.random() * unplayed.length)];
         },
 
-
+        // Let the user undo
 
         goBackToRound(turn) {
             console.log("turn" + turn);
@@ -87,7 +87,7 @@ const Game = {
         },
 
         //Computer Move Calculator.. Returns C or D string
-        //
+
         computerMove() {
 
 
@@ -126,7 +126,7 @@ const Game = {
 
         },
 
-        // Process The Users turn
+        // Process The Users Click (Selection)
 
         takeTurn(userMove) {
 
