@@ -7,6 +7,8 @@
                 v-for="product in products"
                 v-bind:key="product.id"
                 v-bind:product="product"
+                v-bind:display="0"
+
             ></show-product>
         </div>
     </div>

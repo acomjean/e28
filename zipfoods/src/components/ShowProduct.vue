@@ -8,9 +8,9 @@
                 require('@/assets/images/products/' + product.id + '.jpg')
             "
         />
-
-        <div class="price">${{ product.price }}</div>
-        <p class="description">{{ product.description }}</p>
+        
+        <div v-if="display==1"  class="price">${{ product.price }}</div>
+        <p v-if="display==1" class="description">{{ product.description }}</p>
     </div>
 </template>
 
@@ -20,6 +20,9 @@ export default {
         product: {
             type: Object,
         },
+        display:{
+            type: Number,
+        } 
     },
 };
 </script>
