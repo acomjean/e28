@@ -181,14 +181,19 @@ export default {
     computed: {
         // Get the results of the last gamed played.
         artistCount() {
-            if (this.artistData.artist_data.length > 0) {
-                return this.artistData.artist_data.length;
+            if (this.artistList.length > 0) {
+                return this.artistList.length;
             } else {
                 return null;
             }
         },
+        artistList() {
+            return this.artistData.artist_data;
+        },
         filterdList() {
-            if (this.checkedGenres > 0) {
+            if (this.checkedGenres.length == 0) {
+                console.log("NONE Checekd");
+
                 return this.artistData.artist_data.length;
             } else {
                 /*
@@ -198,13 +203,14 @@ export default {
                 );
                 */
                 var filtered = [];
-                for (var i = 0; i < this.artistData.artist_data.length; i++) {
+                for (var i = 0; i < this.artistList.length; i++) {
                     console.log(i);
-                    if (
-                        this.artistData.artist_data[i]["genres_array"].indexOf(
-                            this.checkedGenres
-                        ) > -1
-                    ) {
+                    var found = this.artistList[i]["genres_array"].some(
+                        (r) => this.checkedGenres.indexOf(r) >= 0
+                    );
+
+                    console.log(i + " " + found);
+                    if (found) {
                         console.log(
                             "found " +
                                 this.artistData.artist_data[i]["member_id"]
