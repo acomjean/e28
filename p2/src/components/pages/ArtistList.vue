@@ -8,7 +8,7 @@
         <input
             type="checkbox"
             id="BooksPaper"
-            value="Books + Paper"
+            value="Books+Paper"
             v-model="checkedGenres"
         />
         <label for="BooksPaper"> Books + Paper </label>
@@ -32,7 +32,7 @@
         <input
             type="checkbox"
             id="FiberTextiles"
-            value="Fiber + Textiles"
+            value="Fiber+Textiles"
             v-model="checkedGenres"
         />
         <label for="FiberTextiles"> Fiber + Textiles </label>
@@ -48,7 +48,7 @@
         <input
             type="checkbox"
             id="GlassMosaics"
-            value="Glass + Mosaics"
+            value="Glass+Mosaics"
             v-model="checkedGenres"
         />
         <label for="GlassMosaics"> Glass + Mosaics</label>
@@ -56,7 +56,7 @@
         <input
             type="checkbox"
             id="GraphicDesign"
-            value="Graphic Design"
+            value="GraphicDesign"
             v-model="checkedGenres"
         />
         <label for="GraphicDesign"> Graphic Design </label>
@@ -72,7 +72,7 @@
         <input
             type="checkbox"
             id="JewelryBeads"
-            value="Jewelry + Beads"
+            value="Jewelry+Beads"
             v-model="checkedGenres"
         />
         <label for="JewelryBeads"> Jewelry + Beads </label>
@@ -145,36 +145,45 @@
             {{ checkedGenres }}
         </div>
 
-        <li>
-            <a href="/web/artists/artist_profile/1337 ">
+        <h2>List counts</h2>
+        Total Artists :{{ artistCount }}
+
+        
+        <h2>Artists Found</h2>
+        <ul class="thumb_container">
+            <li
+                v-for="oneArtist in filterdList"
+                v-bind:key="oneArtist.member_id"
+            >
                 <img
-                    src="/artist_files/artist_images/splash/1337.jpg"
-                    height="150"
-                    width="150"
-                    alt=" Liz LaManche thumbnail "
+                    :src="getPic(oneArtist)"
+                    v-bind:alt="oneArtist.PublicLastName"
+                    height="170"
+                    width="170"
                 />
-
-                <div class="thumbnail_label">
-                    Earthsign Studios LLC <br />
-                    Liz LaManche
-                </div>
-            </a>
-        </li>
-        <h2>list count</h2>
-        {{ artistCount }}
-
-        <h2>list count</h2>
-        <div v-for="oneArtist in filterdList" v-bind:key="oneArtist.member_id">
-            {{ oneArtist.PublicFirstName }} {{ oneArtist.PublicLastName }}
-        </div>
+                {{ oneArtist.PublicFirstName }} {{ oneArtist.PublicLastName }}
+            </li>
+        </ul>
     </div>
 </template>
 
 <script>
 export default {
+    methods: {
+        getPic(artistData) {
+            console.log(artistData);
+            return (
+                this.imageBaseUrl +
+                "/" +
+                artistData["thumb_data"]["filename_and_path"]
+            );
+        },
+    },
+
     data() {
         return {
             checkedGenres: [],
+            imageBaseUrl: "https://www.somervilleopenstudios.org",
         };
     },
 
@@ -194,7 +203,7 @@ export default {
             if (this.checkedGenres.length == 0) {
                 console.log("NONE Checekd");
 
-                return this.artistData.artist_data.length;
+                return [];
             } else {
                 /*
                 var oneGenre = this.checkedGenres[0];
@@ -233,4 +242,33 @@ export default {
 </script>
 
 <style>
+.thumb_container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    grid-gap: 1px;
+    list-style: none;
+    margin: 0;
+    padding: 2.2rem;
+    background-color: #fcfcff;
+}
+
+.thumb_container li {
+    font-size: 0.9em;
+    margin: auto;
+    background: white;
+    padding: 10px 10px;
+    margin-top: 10px;
+    border-radius: 30px 0 /0px 0px;
+    box-shadow: 0px 1px 2px 1px #c4c4c4;
+    min-height: 200px;
+    min-width: 150px;
+    max-width: 180px;
+
+    border: 0px solid gray;
+}
+.thumb_container li img {
+    margin:auto
+
+}
+
 </style>

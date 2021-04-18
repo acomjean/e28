@@ -2,8 +2,7 @@
     <div id="home-page">
         <h2>Somerville Open Studios SPA</h2>
         <p>
-            ZipFoods is your one-stop-shop for convenient online grocery
-            shopping in the greater Boston area.
+            Single Page Application For Somerville Open Studios.
         </p>
     </div>
 </template>
