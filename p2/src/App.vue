@@ -1,26 +1,48 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
-</template>
+    <div>
+        <img alt="Vue logo" src="./assets/logo.png" />
+        <h2>Page</h2>
+        <nav>
+            <ul>
+                <li>
+                    <router-link
+                        v-for="link in links"
+                        v-bind:key="link"
+                        v-bind:to="paths[link]"
+                        >{{ link }}
+                    </router-link>
+                </li>
+            </ul>
+        </nav>
+        <!-- Show the routed component -->
+        <router-view v-bind:artistData="artistData"> </router-view>
 
+        {{ artistList }}
+    </div>
+</template>
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+
+import  artistData  from '@/common/all_artists_2021.json';
+
 
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+    name: "App",
+    data() {
+        return {
+            artistData: artistData,
+            links: ["Home", "Browse Artists"],
+            /* Map links to  the appropriate component */
+            paths: {
+                Home: "/",
+                "Browse Artists": "/browse-artists",
+            },
+        };
+    },
+};
 </script>
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+    font-family: Helvetica, Arial, sans-serif;
 }
 </style>

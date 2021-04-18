@@ -1,0 +1,230 @@
+<template>
+    <div id="artist-list">
+        <h2>Somerville Open Studios SPA</h2>
+        <p>List of Current Artists</p>
+
+        <h3>Medium</h3>
+
+        <input
+            type="checkbox"
+            id="BooksPaper"
+            value="Books + Paper"
+            v-model="checkedGenres"
+        />
+        <label for="BooksPaper"> Books + Paper </label>
+
+        <input
+            type="checkbox"
+            id="Collage"
+            value="Collage"
+            v-model="checkedGenres"
+        />
+        <label for="Collage"> Collage </label>
+
+        <input
+            type="checkbox"
+            id="Drawing"
+            value="Drawing"
+            v-model="checkedGenres"
+        />
+        <label for="Drawing"> Drawing </label>
+
+        <input
+            type="checkbox"
+            id="FiberTextiles"
+            value="Fiber + Textiles"
+            v-model="checkedGenres"
+        />
+        <label for="FiberTextiles"> Fiber + Textiles </label>
+
+        <input
+            type="checkbox"
+            id="Furniture"
+            value="Furniture"
+            v-model="checkedGenres"
+        />
+        <label for="Furniture"> Furnitures</label>
+
+        <input
+            type="checkbox"
+            id="GlassMosaics"
+            value="Glass + Mosaics"
+            v-model="checkedGenres"
+        />
+        <label for="GlassMosaics"> Glass + Mosaics</label>
+
+        <input
+            type="checkbox"
+            id="GraphicDesign"
+            value="Graphic Design"
+            v-model="checkedGenres"
+        />
+        <label for="GraphicDesign"> Graphic Design </label>
+
+        <input
+            type="checkbox"
+            id="Installation"
+            value="Installation"
+            v-model="checkedGenres"
+        />
+        <label for="Installation"> Installation </label>
+
+        <input
+            type="checkbox"
+            id="JewelryBeads"
+            value="Jewelry + Beads"
+            v-model="checkedGenres"
+        />
+        <label for="JewelryBeads"> Jewelry + Beads </label>
+
+        <input
+            type="checkbox"
+            id="Mixed-Media"
+            value="Mixed-Media"
+            v-model="checkedGenres"
+        />
+        <label for="Mixed-Media"> Mixed-Media </label>
+
+        <input
+            type="checkbox"
+            id="Painting"
+            value="Painting"
+            v-model="checkedGenres"
+        />
+        <label for="Painting"> Painting </label>
+
+        <input
+            type="checkbox"
+            id="Photography"
+            value="Photography"
+            v-model="checkedGenres"
+        />
+        <label for="Photography"> Photography </label>
+
+        <input
+            type="checkbox"
+            id="Pottery"
+            value="Pottery"
+            v-model="checkedGenres"
+        />
+        <label for="Pottery"> Pottery </label>
+
+        <input
+            type="checkbox"
+            id="Printmaking"
+            value="Printmaking"
+            v-model="checkedGenres"
+        />
+        <label for="Printmaking"> Printmaking </label>
+
+        <input
+            type="checkbox"
+            id="Sculpture"
+            value="Sculpture"
+            v-model="checkedGenres"
+        />
+        <label for="Sculpture"> Sculpture </label>
+
+        <input
+            type="checkbox"
+            id="Video"
+            value="Video"
+            v-model="checkedGenres"
+        />
+        <label for="Video"> Video </label>
+
+        <input
+            type="checkbox"
+            id="Other "
+            value="Other "
+            v-model="checkedGenres"
+        />
+        <label for="Other"> Other </label>
+
+        <div id="searchSelection">
+            {{ checkedGenres }}
+        </div>
+
+        <li>
+            <a href="/web/artists/artist_profile/1337 ">
+                <img
+                    src="/artist_files/artist_images/splash/1337.jpg"
+                    height="150"
+                    width="150"
+                    alt=" Liz LaManche thumbnail "
+                />
+
+                <div class="thumbnail_label">
+                    Earthsign Studios LLC <br />
+                    Liz LaManche
+                </div>
+            </a>
+        </li>
+        <h2>list count</h2>
+        {{ artistCount }}
+
+        <h2>list count</h2>
+        <div v-for="oneArtist in filterdList" v-bind:key="oneArtist.member_id">
+            {{ oneArtist.PublicFirstName }} {{ oneArtist.PublicLastName }}
+        </div>
+    </div>
+</template>
+
+<script>
+export default {
+    data() {
+        return {
+            checkedGenres: [],
+        };
+    },
+
+    computed: {
+        // Get the results of the last gamed played.
+        artistCount() {
+            if (this.artistData.artist_data.length > 0) {
+                return this.artistData.artist_data.length;
+            } else {
+                return null;
+            }
+        },
+        filterdList() {
+            if (this.checkedGenres > 0) {
+                return this.artistData.artist_data.length;
+            } else {
+                /*
+                var oneGenre = this.checkedGenres[0];
+                var items = this.artistData.artist_data.filter(
+                    (item) => item.genres_array.indexOf(oneGenre) !== -1
+                );
+                */
+                var filtered = [];
+                for (var i = 0; i < this.artistData.artist_data.length; i++) {
+                    console.log(i);
+                    if (
+                        this.artistData.artist_data[i]["genres_array"].indexOf(
+                            this.checkedGenres
+                        ) > -1
+                    ) {
+                        console.log(
+                            "found " +
+                                this.artistData.artist_data[i]["member_id"]
+                        );
+                        filtered.push(this.artistData.artist_data[i]);
+                    }
+                }
+                return filtered;
+            }
+        },
+    },
+
+    props: {
+        artistData: {
+            type: Object,
+            default: null,
+        },
+    },
+};
+</script>
+
+<style>
+</style>
