@@ -148,45 +148,36 @@
         <h2>List counts</h2>
         Total Artists :{{ artistCount }}
 
-        
-        <h2>Artists Found</h2>
-        <ul class="thumb_container">
-            <li
-                v-for="oneArtist in filterdList"
-                v-bind:key="oneArtist.member_id"
-            >
-                <img
-                    :src="getPic(oneArtist)"
-                    v-bind:alt="oneArtist.PublicLastName"
-                    height="170"
-                    width="170"
-                />
-                {{ oneArtist.PublicFirstName }} {{ oneArtist.PublicLastName }}
-            </li>
-        </ul>
+        <button v-on:click="$emit('add-to-itinerary', artistCount)">
+            Emit to add to itinerary
+        </button>
+
+        <artist-grid
+            v-on:add-to-itinerary="addToItinerary($event)"
+            v-bind:artistList="filteredList"
+            v-bind:imgBaseUrl="imageBaseUrl"
+        >
+        </artist-grid>
     </div>
 </template>
 
 <script>
-export default {
-    methods: {
-        getPic(artistData) {
-            console.log(artistData);
-            return (
-                this.imageBaseUrl +
-                "/" +
-                artistData["thumb_data"]["filename_and_path"]
-            );
-        },
-    },
+import ArtistGrid from "@/components/ArtistGrid.vue";
 
+export default {
     data() {
         return {
             checkedGenres: [],
             imageBaseUrl: "https://www.somervilleopenstudios.org",
         };
     },
-
+    methods: {
+        // pass on up to parent
+        addToItinerary(member_id) {
+            console.log("component call");
+            this.$emit("add-to-itinerary", member_id);
+        },
+    },
     computed: {
         // Get the results of the last gamed played.
         artistCount() {
@@ -199,7 +190,7 @@ export default {
         artistList() {
             return this.artistData.artist_data;
         },
-        filterdList() {
+        filteredList() {
             if (this.checkedGenres.length == 0) {
                 console.log("NONE Checekd");
 
@@ -238,37 +229,12 @@ export default {
             default: null,
         },
     },
+
+    components: {
+        "artist-grid": ArtistGrid,
+    },
 };
 </script>
 
 <style>
-.thumb_container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    grid-gap: 1px;
-    list-style: none;
-    margin: 0;
-    padding: 2.2rem;
-    background-color: #fcfcff;
-}
-
-.thumb_container li {
-    font-size: 0.9em;
-    margin: auto;
-    background: white;
-    padding: 10px 10px;
-    margin-top: 10px;
-    border-radius: 30px 0 /0px 0px;
-    box-shadow: 0px 1px 2px 1px #c4c4c4;
-    min-height: 200px;
-    min-width: 150px;
-    max-width: 180px;
-
-    border: 0px solid gray;
-}
-.thumb_container li img {
-    margin:auto
-
-}
-
 </style>

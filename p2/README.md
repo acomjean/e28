@@ -22,3 +22,6 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+https://stackoverflow.com/questions/40491506/vue-js-dynamic-images-not-working
+
