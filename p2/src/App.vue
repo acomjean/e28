@@ -44,6 +44,8 @@ export default {
                 Itinerary: "/itinerary",
             },
             userID: 1,
+            errors: "",
+            showConfirmation: false,
         };
     },
 
@@ -59,6 +61,19 @@ export default {
         // This is the root function, so add the event.
 
         addToItinerary(artist_member_id) {
+            var oneItinerary = {
+                artist_member_id: artist_member_id,
+                user_id: this.userID,
+            };
+            axios.post("/itinerary", oneItinerary).then((response) => {
+                if (response.data.errors) {
+                    this.errors = response.data.errors;
+                    this.showConfirmation = false;
+                } else {
+                    this.$emit("update-products");
+                    this.showConfirmation = true;
+                }
+            });
             console.log("add Art ID" + artist_member_id);
             console.log(artist_member_id);
         },
