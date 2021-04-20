@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-cloak>
         <!--
             <img alt="Vue logo" src="./assets/logo.png" />
         -->
@@ -21,9 +21,10 @@
             v-on:add-to-itinerary="addToItinerary($event)"
             v-on:remove-from-itinerary="removeFromItinerary($event)"
             v-on:update-itinerary="addToItinerary($event)"
-            v-bind:artistData="artistData"
-            v-bind:itineraryDetails="itinerary"
+            v-bind:artist-data="artistData"
+            v-bind:itinerary-details="itinerary"
             v-bind:messages="messages"
+            v-bind:image-base-url="imageBaseUrl"
         >
         </router-view>
     </div>
@@ -50,12 +51,14 @@ export default {
             userID: 4,
             errors: "",
             showConfirmation: false,
+            imageBaseUrl: "https://www.somervilleopenstudios.org",
         };
     },
 
     mounted() {
         this.loadItinerary();
     },
+
     methods: {
         // Load user for userID (userID hardcoded currently)
 
@@ -125,6 +128,10 @@ export default {
 
 
 <style>
+[v-cloak] {
+    display: none;
+}
+
 #app {
     font-family: Helvetica, Arial, sans-serif;
 }

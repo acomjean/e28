@@ -179,7 +179,6 @@ export default {
     data() {
         return {
             checkedGenres: ["Video"],
-            imageBaseUrl: "https://www.somervilleopenstudios.org",
         };
     },
     methods: {
@@ -245,6 +244,9 @@ export default {
         },
         messages: {
             type: Array,
+        },
+        imageBaseUrl: {
+            type: String,
         },
     },
 

@@ -1,6 +1,7 @@
 <template>
-    <div id="artist-list">
-        <h2>Artist List</h2>
+    <div id="artist-grid">
+        <h2>Artist Grid</h2>
+
         <ul class="thumb_container">
             <li
                 v-for="oneArtist in artistList"

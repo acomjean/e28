@@ -25,3 +25,4 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 https://stackoverflow.com/questions/40491506/vue-js-dynamic-images-not-working
 
+https://www.telerik.com/blogs/how-to-emit-data-in-vue-beyond-the-vuejs-documentation

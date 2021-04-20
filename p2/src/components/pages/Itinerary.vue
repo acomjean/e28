@@ -11,6 +11,14 @@
         </div>
 
         <div v-if="itineraryDetails.length > 0">
+            <div class="artist-panel" v-if="showArtistPanel == true">
+                <artist-slideshow
+                    v-bind:one-artist-detail="currentArtist"
+                    v-bind:imgBaseUrl="imageBaseUrl"
+                >
+                </artist-slideshow>
+            </div>
+
             <div class="itin-container">
                 <div class="itin-item">
                     <ul>
@@ -28,6 +36,12 @@
                                 artistsObject[oneArtist.member_id]
                                     .PublicLastName
                             }}
+                            <button
+                                v-on:click="showArtist(oneArtist.member_id)"
+                                class="select-button"
+                            >
+                                Visit Artist
+                            </button>
                         </li>
                     </ul>
                 </div>
@@ -41,7 +55,17 @@
 </template>
 
 <script>
+import ArtistSlideshow from "@/components/ArtistSlideshow.vue";
+
 export default {
+    components: { ArtistSlideshow },
+    data() {
+        return {
+            showArtistPanel: false,
+            currentArtist: {},
+        };
+    },
+
     methods: {
         // pass on up to parent
         addToItinerary(member_id) {
@@ -51,6 +75,11 @@ export default {
         // pass on up to parent
         removeFromItinerary(member_id) {
             this.$emit("remove-from-itinerary", member_id);
+        },
+
+        showArtist(member_id) {
+            this.showArtistPanel = true;
+            this.currentArtist = this.artistsObject[member_id];
         },
     },
 
@@ -98,13 +127,16 @@ export default {
         messages: {
             type: Array,
         },
+        imageBaseUrl: {
+            type: String,
+        },
     },
 };
 </script>
 
 <style>
 [v-cloak] {
-    display: none !important;
+    display: none;
 }
 
 .itin-container {
@@ -113,5 +145,35 @@ export default {
 .itin-item {
     width: 50%;
     flex-basis: 1;
+}
+.select-button {
+    font: "Permanent Marker";
+    margin: 10px;
+    padding: 0.85em 1em;
+    padding-top: 0.7em;
+    padding-right: 1em;
+    padding-bottom: 0.7em;
+    padding-left: 1em;
+    border: 1px solid black;
+    transition: background-color 0.25s ease-out, color 0.25s ease-out;
+    border-radius: 5px;
+    background-color: #b1b1bb;
+    color: hsl(240, 78%, 2%);
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
+}
+.select-button:hover {
+    font: "Permanent Marker";
+    margin: 10px;
+    padding: 0.85em 1em;
+    padding-top: 0.7em;
+    padding-right: 1em;
+    padding-bottom: 0.7em;
+    padding-left: 1em;
+    border: 1px solid black;
+    transition: background-color 0.25s ease-out, color 0.25s ease-out;
+    border-radius: 5px;
+    background-color: #d5d5e6;
+    color: hsl(240, 78%, 2%);
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
 }
 </style>
