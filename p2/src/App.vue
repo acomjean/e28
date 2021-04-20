@@ -1,6 +1,8 @@
 <template>
     <div>
-        <img alt="Vue logo" src="./assets/logo.png" />
+        <!--
+            <img alt="Vue logo" src="./assets/logo.png" />
+        -->
         <h2>Art Browser</h2>
         <nav>
             <ul>
@@ -45,7 +47,7 @@ export default {
                 "Browse Artists": "/browse-artists",
                 Itinerary: "/itinerary",
             },
-            userID: 3,
+            userID: 4,
             errors: "",
             showConfirmation: false,
         };
@@ -72,16 +74,17 @@ export default {
         },
         // This is the root function, so add the event.
 
-        addToItinerary(artist_member_id) {
-            this.messages.push("** addind member : " + artist_member_id);
+        addToItinerary(memberID) {
+            this.messages.push("** addind member : " + memberID);
             var oneItinerary = {
-                artist_member_id: artist_member_id,
+                member_id: memberID,
                 user_id: this.userID,
+                visited: true,
             };
             axios.post("/itinerary", oneItinerary).then((response) => {
                 if (response.data.errors) {
                     this.errors = response.data.errors;
-                    this.showConfirmation = false;
+                    this.showConfirmation = true;
                 } else {
                     // reload..  We need the ID.
                     this.loadItinerary();
@@ -89,18 +92,16 @@ export default {
             });
         },
 
-        removeFromItinerary(member_id) {
+        removeFromItinerary(memberID) {
             //todo lookup itinerary_if
 
-            this.messages.push("*** removing id : " + member_id);
+            this.messages.push("*** removing id : " + memberID);
 
             // there should only be on..  But lets remove all matching.
 
             for (var i = 0; i < this.itinerary.length; i++) {
-                console.log(
-                    member_id + "==" + this.itinerary[i].artist_member_id
-                );
-                if (member_id == this.itinerary[i].artist_member_id) {
+                console.log(memberID + "==" + this.itinerary[i].memberID);
+                if (memberID == this.itinerary[i].member_id) {
                     axios
                         .delete("/itinerary/" + this.itinerary[i].id)
                         .then((response) => {

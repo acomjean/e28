@@ -25,14 +25,14 @@
                                 removeFromItinerary(oneArtist.member_id)
                             "
                         >
-                            <b> Remove - </b>
+                            <b> Remove ❌ </b>
                         </button>
                     </div>
                     <div v-else>
                         <button
                             v-on:click="addToItinerary(oneArtist.member_id)"
                         >
-                            <b> Add + </b>
+                            <b> Add ✅️ </b>
                         </button>
                     </div>
                 </div>
@@ -77,9 +77,7 @@ export default {
         memberIdsOfItinerary() {
             var filtered = [];
             for (var i = 0; i < this.itineraryDetails.length; i++) {
-                filtered.push(
-                    "" + this.itineraryDetails[i]["artist_member_id"]
-                );
+                filtered.push("" + this.itineraryDetails[i]["member_id"]);
             }
             return filtered;
         },

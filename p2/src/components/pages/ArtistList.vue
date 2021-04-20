@@ -185,12 +185,11 @@ export default {
     methods: {
         // pass on up to parent
         addToItinerary(member_id) {
-            console.log("component call");
             this.$emit("add-to-itinerary", member_id);
         },
 
+        // pass on up to parent
         removeFromItinerary(member_id) {
-            console.log("component call");
             this.$emit("remove-from-itinerary", member_id);
         },
     },
@@ -204,29 +203,25 @@ export default {
                 return null;
             }
         },
+
+        // get the array of all artists
         artistList() {
             return this.artistData.artist_data;
         },
+
+        // list of artists filtered by Genres (based on checkboxes)
         filteredList() {
             if (this.checkedGenres.length == 0) {
-                console.log("NONE Checekd");
+                console.log("NONE Checeked");
 
                 return [];
             } else {
-                /*
-                var oneGenre = this.checkedGenres[0];
-                var items = this.artistData.artist_data.filter(
-                    (item) => item.genres_array.indexOf(oneGenre) !== -1
-                );
-                */
                 var filtered = [];
                 for (var i = 0; i < this.artistList.length; i++) {
-                    console.log(i);
                     var found = this.artistList[i]["genres_array"].some(
                         (r) => this.checkedGenres.indexOf(r) >= 0
                     );
 
-                    console.log(i + " " + found);
                     if (found) {
                         console.log(
                             "found " +
