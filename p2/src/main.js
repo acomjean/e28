@@ -3,8 +3,8 @@ import { createRouter, createWebHistory } from 'vue-router';
 
 import App from './App.vue'
 import HomePage from '@/components/pages/HomePage.vue';
-import ArtistList from '@/components/pages/ArtistList.vue';
-import Itinerary from '@/components/pages/Itinerary.vue';
+import ArtistList from '@/components/pages/ArtistListPage.vue';
+import Itinerary from '@/components/pages/ItineraryPage.vue';
 
 
 const router = createRouter({

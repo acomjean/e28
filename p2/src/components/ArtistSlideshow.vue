@@ -4,6 +4,7 @@
             {{ oneArtistDetail.PublicFirstName }}
             {{ oneArtistDetail.PublicLastName }}
         </h3>
+        <p>{{ oneArtistDetail.ShortDescription }}</p>
         <div v-if="oneArtistDetail.image_data.length > 0">
             <img :src="getPic()" v-bind:alt="oneArtistDetail.PublicLastName" />
             <div v-if="oneArtistDetail.image_data.length > 1">
