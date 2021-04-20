@@ -17,12 +17,13 @@
         <!-- Show the routed component -->
         <router-view
             v-on:add-to-itinerary="addToItinerary($event)"
+            v-on:remove-from-itinerary="removeFromItinerary($event)"
+            v-on:update-itinerary="addToItinerary($event)"
             v-bind:artistData="artistData"
             v-bind:itineraryDetails="itinerary"
+            v-bind:messages="messages"
         >
         </router-view>
-
-        {{ artistList }}
     </div>
 </template>
 <script>
@@ -34,6 +35,7 @@ export default {
 
     data() {
         return {
+            messages: [],
             itinerary: [],
             artistData: artistData,
             links: ["Home", "Browse Artists", "Itinerary"],
@@ -43,7 +45,7 @@ export default {
                 "Browse Artists": "/browse-artists",
                 Itinerary: "/itinerary",
             },
-            userID: 1,
+            userID: 3,
             errors: "",
             showConfirmation: false,
         };
@@ -53,14 +55,25 @@ export default {
         this.loadItinerary();
     },
     methods: {
+        // Load user for userID (userID hardcoded currently)
+
         loadItinerary() {
-            axios.get("itinerary").then((response) => {
-                this.itinerary = response.data.itinerary;
-            });
+            axios
+                .get("itinerary/query", {
+                    params: {
+                        user_id: this.userID,
+                    },
+                })
+                .then((response) => {
+                    console.log();
+
+                    this.itinerary = response.data.itinerary;
+                });
         },
         // This is the root function, so add the event.
 
         addToItinerary(artist_member_id) {
+            this.messages.push("** addind member : " + artist_member_id);
             var oneItinerary = {
                 artist_member_id: artist_member_id,
                 user_id: this.userID,
@@ -70,12 +83,38 @@ export default {
                     this.errors = response.data.errors;
                     this.showConfirmation = false;
                 } else {
-                    this.$emit("update-products");
-                    this.showConfirmation = true;
+                    // reload..  We need the ID.
+                    this.loadItinerary();
                 }
             });
-            console.log("add Art ID" + artist_member_id);
-            console.log(artist_member_id);
+        },
+
+        removeFromItinerary(member_id) {
+            //todo lookup itinerary_if
+
+            this.messages.push("*** removing id : " + member_id);
+
+            // there should only be on..  But lets remove all matching.
+
+            for (var i = 0; i < this.itinerary.length; i++) {
+                console.log(
+                    member_id + "==" + this.itinerary[i].artist_member_id
+                );
+                if (member_id == this.itinerary[i].artist_member_id) {
+                    axios
+                        .delete("/itinerary/" + this.itinerary[i].id)
+                        .then((response) => {
+                            if (response.data.errors) {
+                                this.errors = response.data.errors;
+                                this.showConfirmation = false;
+                            } else {
+                                // reload..  Technically we could just remove from the array.. But its
+                                // another check
+                                this.loadItinerary();
+                            }
+                        });
+                }
+            }
         },
     },
 };

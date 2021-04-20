@@ -14,12 +14,27 @@
                         width="170"
                     />
                     <p>
+                        {{ oneArtist.member_id }}
                         {{ oneArtist.PublicFirstName }}
                         {{ oneArtist.PublicLastName }}
                     </p>
-                    <button v-on:click="addToItinerary(oneArtist.member_id)">
-                        +
-                    </button>
+
+                    <div v-if="checkIfInItinerary(oneArtist.member_id)">
+                        <button
+                            v-on:click="
+                                removeFromItinerary(oneArtist.member_id)
+                            "
+                        >
+                            <b> Remove - </b>
+                        </button>
+                    </div>
+                    <div v-else>
+                        <button
+                            v-on:click="addToItinerary(oneArtist.member_id)"
+                        >
+                            <b> Add + </b>
+                        </button>
+                    </div>
                 </div>
             </li>
         </ul>
@@ -29,6 +44,7 @@
 <script>
 export default {
     methods: {
+        // load picture (just setting the atr with vue will not work)
         getPic(artistData) {
             console.log(artistData);
             return (
@@ -38,10 +54,34 @@ export default {
             );
         },
 
-        // emit to parent
-        addToItinerary(member_id) {
+        addToItinerary(memberID) {
             console.log("component call");
-            this.$emit("add-to-itinerary", member_id);
+            this.$emit("add-to-itinerary", memberID);
+        },
+
+        removeFromItinerary(memberID) {
+            console.log("component call");
+            this.$emit("remove-from-itinerary", memberID);
+        },
+
+        checkIfInItinerary(memberID) {
+            console.log("checking " + memberID);
+            console.log(this.memberIdsOfItinerary);
+            var x = this.memberIdsOfItinerary.includes("" + memberID);
+            console.log(x);
+            return x;
+        },
+    },
+
+    computed: {
+        memberIdsOfItinerary() {
+            var filtered = [];
+            for (var i = 0; i < this.itineraryDetails.length; i++) {
+                filtered.push(
+                    "" + this.itineraryDetails[i]["artist_member_id"]
+                );
+            }
+            return filtered;
         },
     },
 
@@ -51,6 +91,9 @@ export default {
         },
         imgBaseUrl: {
             type: String,
+        },
+        itineraryDetails: {
+            type: Array,
         },
     },
     data() {

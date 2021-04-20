@@ -151,11 +151,22 @@
         <button v-on:click="$emit('add-to-itinerary', artistCount)">
             Emit to add to itinerary
         </button>
+        <ul>
+            <li
+                v-for="message in messages"
+                v-bind:to="message"
+                v-bind:key="message"
+            >
+                {{ message }}
+            </li>
+        </ul>
 
         <artist-grid
             v-on:add-to-itinerary="addToItinerary($event)"
+            v-on:remove-from-itinerary="removeFromItinerary($event)"
             v-bind:artistList="filteredList"
             v-bind:imgBaseUrl="imageBaseUrl"
+            v-bind:itineraryDetails="itineraryDetails"
         >
         </artist-grid>
     </div>
@@ -167,7 +178,7 @@ import ArtistGrid from "@/components/ArtistGrid.vue";
 export default {
     data() {
         return {
-            checkedGenres: [],
+            checkedGenres: ["Video"],
             imageBaseUrl: "https://www.somervilleopenstudios.org",
         };
     },
@@ -177,7 +188,13 @@ export default {
             console.log("component call");
             this.$emit("add-to-itinerary", member_id);
         },
+
+        removeFromItinerary(member_id) {
+            console.log("component call");
+            this.$emit("remove-from-itinerary", member_id);
+        },
     },
+
     computed: {
         // Get the results of the last gamed played.
         artistCount() {
@@ -227,6 +244,12 @@ export default {
         artistData: {
             type: Object,
             default: null,
+        },
+        itineraryDetails: {
+            type: Array,
+        },
+        messages: {
+            type: Array,
         },
     },
 
