@@ -63,7 +63,6 @@ export default {
     methods: {
         // load picture (just setting the atr with vue will not work)
         getPic(artistData) {
-            console.log(artistData);
             return (
                 this.imgBaseUrl +
                 "/" +
@@ -72,21 +71,15 @@ export default {
         },
 
         addToItinerary(memberID) {
-            console.log("component call");
             this.$emit("add-to-itinerary", memberID);
         },
 
         removeFromItinerary(memberID) {
-            console.log("component call");
             this.$emit("remove-from-itinerary", memberID);
         },
 
         checkIfInItinerary(memberID) {
-            console.log("checking " + memberID);
-            console.log(this.memberIdsOfItinerary);
-            var x = this.memberIdsOfItinerary.includes("" + memberID);
-            console.log(x);
-            return x;
+            return this.memberIdsOfItinerary.includes("" + memberID);
         },
         checkIfVisited(memberID) {
             if (

@@ -191,8 +191,6 @@ export default {
         // pass on up to parent
         updateItinerary() {
             var memberID = this.currentArtist["member_id"];
-            console.log("+------------+");
-            console.log(this.itineraryUpdateDetails);
             this.$emit("update-itinerary", {
                 memberID: memberID,
                 details: this.itineraryUpdateDetails,
@@ -218,7 +216,6 @@ export default {
         // artists, indexed by the member ID
 
         artistsObject() {
-            console.log("artists Object");
             var filtered = {};
             // generate a object where the key is the artists member_id
             // saves lots of looping later.
@@ -226,8 +223,7 @@ export default {
                 var memberID = this.artistList[i]["member_id"];
                 filtered[memberID] = this.artistList[i];
             }
-            console.log("filtered");
-            console.log(filtered);
+
             return filtered;
         },
     },

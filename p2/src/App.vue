@@ -64,7 +64,7 @@ export default {
                 "Browse Artists": "/browse-artists",
                 Itinerary: "/itinerary",
             },
-            userID: 5,
+            userID: 6,
             errors: "",
             showConfirmation: false,
             imageBaseUrl: "https://www.somervilleopenstudios.org",
@@ -131,7 +131,6 @@ export default {
             // there should only be on..  But lets remove all matching.
 
             for (var i = 0; i < this.itinerary.length; i++) {
-                console.log(memberID + "==" + this.itinerary[i].memberID);
                 if (memberID == this.itinerary[i].member_id) {
                     axios
                         .delete("/itinerary/" + this.itinerary[i].id)
@@ -142,16 +141,13 @@ export default {
                             } else {
                                 // reload..  Technically we could just remove from the array.. But its
                                 // another check
+                                this.loadItinerary();
                             }
                         });
                 }
             }
-            this.loadItinerary();
         },
         updateItinerary(updateDetails) {
-            console.log("*** Updating Itinerary ");
-            console.log(updateDetails["memberID"]);
-            console.log(updateDetails["details"]);
             var memberID = updateDetails.memberID;
             var updateData = {
                 user_id: this.userID,
@@ -160,9 +156,10 @@ export default {
                 rating: updateDetails.details.rating,
                 comment: updateDetails.details.comment,
             };
-            console.log(updateData);
+
             for (var i = 0; i < this.itinerary.length; i++) {
-                // find mathcing ...
+                // find mathcing itinerary records. update
+
                 if (memberID == this.itinerary[i].member_id) {
                     axios
                         .put("/itinerary/" + this.itinerary[i].id, updateData)
@@ -173,11 +170,11 @@ export default {
                             } else {
                                 // reload..  Technically we could just remove from the array.. But its
                                 // another check
+                                this.loadItinerary();
                             }
                         });
                 }
             }
-            this.loadItinerary();
         },
     },
 };

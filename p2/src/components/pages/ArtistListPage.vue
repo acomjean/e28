@@ -221,8 +221,6 @@ export default {
         // list of artists filtered by Genres (based on checkboxes)
         filteredList() {
             if (this.checkedGenres.length == 0) {
-                console.log("NONE Checeked");
-
                 return [];
             } else {
                 var filtered = [];
@@ -232,10 +230,6 @@ export default {
                     );
 
                     if (found) {
-                        console.log(
-                            "found " +
-                                this.artistData.artist_data[i]["member_id"]
-                        );
                         filtered.push(this.artistData.artist_data[i]);
                     }
                 }
