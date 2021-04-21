@@ -1,6 +1,6 @@
 <template>
     <div id="itinerary-page" v-cloak>
-        <h2>Itinerary List</h2>
+        <h2>Visit Your Itinerary</h2>
         <p></p>
 
         <div v-if="itineraryDetails.length == 0">
@@ -14,43 +14,115 @@
             <div class="artist-panel" v-if="showArtistPanel == true">
                 <artist-slideshow
                     v-bind:one-artist-detail="currentArtist"
-                    v-bind:imgBaseUrl="imageBaseUrl"
+                    v-bind:img-base-url="imageBaseUrl"
                 >
                 </artist-slideshow>
+
                 <hr />
                 <div v-if="showForm">
-                    <label for="rating"
-                        >Rating (out of 5):
-                        <span v-if="errors && errors.rating"> * </span>
-                    </label>
-                    <input
-                        type="number"
-                        v-model="itineraryUpdateDetails.rating"
-                        id="price"
-                    />
-                    <label for="comment">Description</label>
-                    <textarea
-                        v-model.lazy="itineraryUpdateDetails.comment"
-                        id="comment"
-                    ></textarea>
+                    <p>
+                        Rate and make notes about this artists for your future
+                        reference.
+                        <br />
+                        All fields are optional. You can mark this artist as
+                        visited by clicking the Complete Visit Button.
+                        <br />
+                        <label for="rating">Rating (out of 5): </label>
 
-                    <button v-on:click="updateItinerary">Complete Visit</button>
+                        <input
+                            type="number"
+                            v-model="itineraryUpdateDetails.rating"
+                            id="price"
+                        />
+                    </p>
+                    <br />
+                    <p>
+                        <label for="comment">Comment</label>
+                        <textarea
+                            style="width: 200px; height: 50px"
+                            v-model.lazy="itineraryUpdateDetails.comment"
+                            id="comment"
+                        ></textarea>
+                    </p>
+
+                    <p>
+                        <br />
+                        <button
+                            class="select-button"
+                            v-on:click="updateItinerary"
+                        >
+                            Save/ Complete Visit
+                        </button>
+                    </p>
                 </div>
-                <div v-else>No Form</div>
+
+                <div v-else>
+                    <h4>Previous Reviewed:</h4>
+                    <p>
+                        <b>Stars:</b>
+                        {{
+                            itineraryDetailsById[currentArtist.member_id].rating
+                        }}
+                    </p>
+                    <p>
+                        <b>Comment:</b>
+                        {{
+                            itineraryDetailsById[currentArtist.member_id]
+                                .comment
+                        }}
+                    </p>
+                </div>
             </div>
 
             <hr />
 
             <div class="itin-container">
-                <hr />
                 <div class="itin-item">
-                    <ul>
-                        <h3>To Visit</h3>
+                    <h3>Artists To Visit</h3>
+                    <div v-if="artistsToVisit.length == 0">
+                        <b>
+                            You have no Artists in you Itinerary.<br />
+                            <router-link to="/browse-artists">
+                                Go Browse the Artists to add some
+                            </router-link>
+                        </b>
+                    </div>
+                    <ul class="">
                         <li
-                            class="oneCard"
+                            class="artist-v-list"
                             v-for="oneArtist in artistsToVisit"
                             v-bind:key="oneArtist.id"
                         >
+                            <div>
+                                {{
+                                    artistsObject[oneArtist.member_id]
+                                        .PublicFirstName
+                                }}
+                                {{
+                                    artistsObject[oneArtist.member_id]
+                                        .PublicLastName
+                                }}
+                            </div>
+                            <div>
+                                <button
+                                    v-on:click="showArtist(oneArtist.member_id)"
+                                    class="select-button"
+                                >
+                                    View Artwork
+                                </button>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="itin-item">
+                    <h3>Previously Visited</h3>
+                    <li
+                        class="artist-v-list"
+                        v-for="oneArtist in artistsVisited"
+                        v-bind:key="oneArtist.id"
+                    >
+                        <div>
                             {{
                                 artistsObject[oneArtist.member_id]
                                     .PublicFirstName
@@ -59,31 +131,17 @@
                                 artistsObject[oneArtist.member_id]
                                     .PublicLastName
                             }}
+                        </div>
+                        <div>
                             <button
-                                v-on:click="showArtist(oneArtist.member_id)"
+                                v-on:click="
+                                    showArtistNoForm(oneArtist.member_id)
+                                "
                                 class="select-button"
                             >
-                                Visit Artist
+                                View Artwork
                             </button>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="itin-item">
-                    <h3>Visited</h3>
-                    <li
-                        class="oneCard"
-                        v-for="oneArtist in artistsVisited"
-                        v-bind:key="oneArtist.id"
-                    >
-                        {{ artistsObject[oneArtist.member_id].PublicFirstName }}
-                        {{ artistsObject[oneArtist.member_id].PublicLastName }}
-                        <button
-                            v-on:click="showArtistNoForm(oneArtist.member_id)"
-                            class="select-button"
-                        >
-                            Visit Artist
-                        </button>
+                        </div>
                     </li>
                 </div>
             </div>
@@ -117,11 +175,14 @@ export default {
             this.$emit("remove-from-itinerary", member_id);
         },
 
+        // show the artists mini -statement and images - and form to fill out.
         showArtist(member_id) {
             this.showArtistPanel = true;
             this.showForm = true;
             this.currentArtist = this.artistsObject[member_id];
         },
+
+        // show the artists mini -statement and images
         showArtistNoForm(member_id) {
             this.showArtistPanel = true;
             this.showForm = false;
@@ -136,17 +197,15 @@ export default {
                 memberID: memberID,
                 details: this.itineraryUpdateDetails,
             });
+            this.showArtistPanel = false;
         },
     },
 
     computed: {
-        // returns an object of artists :
-        //['visited'] : list of artist
-        //['toVisit'] : list of artists reviewed.
-
         artistsToVisit() {
             return this.itineraryDetails.filter((itin) => itin.visited == "0");
         },
+
         artistsVisited() {
             return this.itineraryDetails.filter((itin) => itin.visited == "1");
         },
@@ -157,6 +216,7 @@ export default {
         },
 
         // artists, indexed by the member ID
+
         artistsObject() {
             console.log("artists Object");
             var filtered = {};
@@ -180,6 +240,9 @@ export default {
         itineraryDetails: {
             type: Array,
         },
+        itineraryDetailsById: {
+            type: Object,
+        },
         messages: {
             type: Array,
         },
@@ -202,34 +265,10 @@ export default {
     width: 50%;
     flex-basis: 1;
 }
-.select-button {
-    font: "Permanent Marker";
-    margin: 10px;
-    padding: 0.85em 1em;
-    padding-top: 0.7em;
-    padding-right: 1em;
-    padding-bottom: 0.7em;
-    padding-left: 1em;
-    border: 1px solid black;
-    transition: background-color 0.25s ease-out, color 0.25s ease-out;
-    border-radius: 5px;
-    background-color: #b1b1bb;
-    color: hsl(240, 78%, 2%);
-    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
-}
-.select-button:hover {
-    font: "Permanent Marker";
-    margin: 10px;
-    padding: 0.85em 1em;
-    padding-top: 0.7em;
-    padding-right: 1em;
-    padding-bottom: 0.7em;
-    padding-left: 1em;
-    border: 1px solid black;
-    transition: background-color 0.25s ease-out, color 0.25s ease-out;
-    border-radius: 5px;
-    background-color: #d5d5e6;
-    color: hsl(240, 78%, 2%);
-    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+.artist-v-list {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-bottom: 0.5px solid lightgray;
 }
 </style>

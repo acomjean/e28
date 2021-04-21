@@ -1,7 +1,5 @@
 <template>
     <div id="artist-grid">
-        <h2>Artist Grid</h2>
-
         <ul class="thumb_container">
             <li
                 v-for="oneArtist in artistList"
@@ -14,20 +12,38 @@
                         height="170"
                         width="170"
                     />
-                    <p>
-                        {{ oneArtist.member_id }}
-                        {{ oneArtist.PublicFirstName }}
-                        {{ oneArtist.PublicLastName }}
-                    </p>
+
+                    {{ oneArtist.member_id }}
+                    {{ oneArtist.PublicFirstName }}
+                    {{ oneArtist.PublicLastName }}
 
                     <div v-if="checkIfInItinerary(oneArtist.member_id)">
-                        <button
-                            v-on:click="
-                                removeFromItinerary(oneArtist.member_id)
-                            "
-                        >
-                            <b> Remove ❌ </b>
-                        </button>
+                        <div v-if="checkIfVisited(oneArtist.member_id)">
+                            <div
+                                v-if="
+                                    itineraryDetailsById[oneArtist.member_id]
+                                        .rating == null
+                                "
+                            >
+                                Visited/ Not Rated
+                            </div>
+                            <div v-else>
+                                Rating :
+                                {{
+                                    itineraryDetailsById[oneArtist.member_id]
+                                        .rating
+                                }}
+                            </div>
+                        </div>
+                        <div v-else>
+                            <button
+                                v-on:click="
+                                    removeFromItinerary(oneArtist.member_id)
+                                "
+                            >
+                                <b> Remove ❌ </b>
+                            </button>
+                        </div>
                     </div>
                     <div v-else>
                         <button
@@ -72,6 +88,17 @@ export default {
             console.log(x);
             return x;
         },
+        checkIfVisited(memberID) {
+            if (
+                this.itineraryDetailsById &&
+                this.itineraryDetailsById[memberID]
+            ) {
+                if (this.itineraryDetailsById[memberID].visited == "1") {
+                    return true;
+                }
+            }
+            return false;
+        },
     },
 
     computed: {
@@ -94,6 +121,9 @@ export default {
         itineraryDetails: {
             type: Array,
         },
+        itineraryDetailsById: {
+            type: Object,
+        },
     },
     data() {
         return {};
@@ -113,7 +143,7 @@ export default {
 }
 
 .thumb_container li {
-    font-size: 0.9em;
+    font-size: 0.8em;
     margin: auto;
     background: white;
     padding: 10px 10px;
@@ -126,7 +156,6 @@ export default {
     border: 0px solid gray;
 }
 .thumb_container li img {
-    margin: auto;
 }
 .artistcard {
     display: flex;

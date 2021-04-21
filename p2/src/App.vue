@@ -17,6 +17,20 @@
             </ul>
         </nav>
         <hr />
+        <!-- for now no messages. Till we get a better handle on them.
+        <div v-if="messages.length > 0">
+            <ul>
+                <li
+                    v-for="message in messages"
+                    v-bind:to="message"
+                    v-bind:key="message"
+                >
+                    {{ message }}
+                </li>
+            </ul>
+            <button v-on:click="clearMessages()">Clear</button>
+        </div>
+-->
         <!-- Show the routed component -->
         <router-view
             v-on:add-to-itinerary="addToItinerary($event)"
@@ -24,6 +38,7 @@
             v-on:update-itinerary="updateItinerary($event)"
             v-bind:artist-data="artistData"
             v-bind:itinerary-details="itinerary"
+            v-bind:itinerary-details-by-id="itineraryByMemberID"
             v-bind:messages="messages"
             v-bind:image-base-url="imageBaseUrl"
         >
@@ -60,7 +75,22 @@ export default {
         this.loadItinerary();
     },
 
+    computed: {
+        itineraryByMemberID() {
+            var itinByID = {};
+            for (var i = 0; i < this.itinerary.length; i++) {
+                var memberID = this.itinerary[i]["member_id"];
+                itinByID[memberID] = this.itinerary[i];
+            }
+            return itinByID;
+        },
+    },
+
     methods: {
+        clearMessages() {
+            this.messages = [];
+        },
+
         // Load user for userID (userID hardcoded currently)
 
         loadItinerary() {
@@ -76,10 +106,9 @@ export default {
                     this.itinerary = response.data.itinerary;
                 });
         },
-        // This is the root function, so add the event.
 
         addToItinerary(memberID) {
-            this.messages.push("** addind member : " + memberID);
+            this.messages.push("adding artist : " + memberID);
             var oneItinerary = {
                 member_id: memberID,
                 user_id: this.userID,
@@ -97,7 +126,7 @@ export default {
         },
 
         removeFromItinerary(memberID) {
-            this.messages.push("*** removing id : " + memberID);
+            this.messages.push("removing id : " + memberID);
 
             // there should only be on..  But lets remove all matching.
 
@@ -162,7 +191,34 @@ export default {
     display: none;
 }
 
-#app {
-    font-family: Helvetica, Arial, sans-serif;
+/* From zipfoods example */
+
+nav ul {
+    list-style-type: none;
+}
+
+nav ul li {
+    display: inline-block;
+}
+
+nav ul li a:link,
+a:visited,
+a:hover,
+a:active {
+    /* Ref: https://stackoverflow.com/a/49783868 for why inline-block is added */
+    text-transform: capitalize;
+    padding: 5px;
+    margin: 5px;
+    cursor: pointer;
+    color: var(--blue);
+    font-weight: bold;
+}
+
+nav ul li a.router-link-active:link,
+a.router-link-active:active {
+    text-decoration: none;
+    color: var(--black);
+    background-color: var(--light-blue);
+    cursor: inherit;
 }
 </style>
