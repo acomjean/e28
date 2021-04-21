@@ -18,29 +18,28 @@
                 >
                 </artist-slideshow>
                 <hr />
+                <div v-if="showForm">
+                    <label for="rating"
+                        >Rating (out of 5):
+                        <span v-if="errors && errors.rating"> * </span>
+                    </label>
+                    <input
+                        type="number"
+                        v-model="itineraryUpdateDetails.rating"
+                        id="price"
+                    />
+                    <label for="comment">Description</label>
+                    <textarea
+                        v-model.lazy="itineraryUpdateDetails.comment"
+                        id="comment"
+                    ></textarea>
 
-                <label for="rating"
-                    >Rating (out of 5):
-                    <span v-if="errors && errors.rating"> * </span>
-                </label>
-                <input
-                    type="number"
-                    v-model="itineraryUpdateDetails.rating"
-                    id="price"
-                />
-                <input
-                    type="hidden"
-                    v-model="itineraryUpdateDetails.visited"
-                    id="visited"
-                />
-                <label for="comment">Description</label>
-                <textarea
-                    v-model.lazy="itineraryUpdateDetails.comment"
-                    id="comment"
-                ></textarea>
-
-                <button v-on:click="updateItinerary">Complete Visit</button>
+                    <button v-on:click="updateItinerary">Complete Visit</button>
+                </div>
+                <div v-else>No Form</div>
             </div>
+
+            <hr />
 
             <div class="itin-container">
                 <hr />
@@ -72,6 +71,20 @@
 
                 <div class="itin-item">
                     <h3>Visited</h3>
+                    <li
+                        class="oneCard"
+                        v-for="oneArtist in artistsVisited"
+                        v-bind:key="oneArtist.id"
+                    >
+                        {{ artistsObject[oneArtist.member_id].PublicFirstName }}
+                        {{ artistsObject[oneArtist.member_id].PublicLastName }}
+                        <button
+                            v-on:click="showArtistNoForm(oneArtist.member_id)"
+                            class="select-button"
+                        >
+                            Visit Artist
+                        </button>
+                    </li>
                 </div>
             </div>
         </div>
@@ -86,6 +99,7 @@ export default {
     data() {
         return {
             showArtistPanel: false,
+            showForm: false,
             currentArtist: {},
             itineraryUpdateDetails: { detail: "", comment: "", rating: "" },
             errors: null,
@@ -105,9 +119,14 @@ export default {
 
         showArtist(member_id) {
             this.showArtistPanel = true;
+            this.showForm = true;
             this.currentArtist = this.artistsObject[member_id];
         },
-
+        showArtistNoForm(member_id) {
+            this.showArtistPanel = true;
+            this.showForm = false;
+            this.currentArtist = this.artistsObject[member_id];
+        },
         // pass on up to parent
         updateItinerary() {
             var memberID = this.currentArtist["member_id"];
@@ -126,10 +145,10 @@ export default {
         //['toVisit'] : list of artists reviewed.
 
         artistsToVisit() {
-            return this.itineraryDetails;
+            return this.itineraryDetails.filter((itin) => itin.visited == "0");
         },
         artistsVisited() {
-            return this.itineraryDetails;
+            return this.itineraryDetails.filter((itin) => itin.visited == "1");
         },
 
         // get the array of all artists
