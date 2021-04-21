@@ -17,9 +17,33 @@
                     v-bind:imgBaseUrl="imageBaseUrl"
                 >
                 </artist-slideshow>
+                <hr />
+
+                <label for="rating"
+                    >Rating (out of 5):
+                    <span v-if="errors && errors.rating"> * </span>
+                </label>
+                <input
+                    type="number"
+                    v-model="itineraryUpdateDetails.rating"
+                    id="price"
+                />
+                <input
+                    type="hidden"
+                    v-model="itineraryUpdateDetails.visited"
+                    id="visited"
+                />
+                <label for="comment">Description</label>
+                <textarea
+                    v-model.lazy="itineraryUpdateDetails.comment"
+                    id="comment"
+                ></textarea>
+
+                <button v-on:click="updateItinerary">Complete Visit</button>
             </div>
 
             <div class="itin-container">
+                <hr />
                 <div class="itin-item">
                     <ul>
                         <h3>To Visit</h3>
@@ -63,6 +87,8 @@ export default {
         return {
             showArtistPanel: false,
             currentArtist: {},
+            itineraryUpdateDetails: { detail: "", comment: "", rating: "" },
+            errors: null,
         };
     },
 
@@ -80,6 +106,17 @@ export default {
         showArtist(member_id) {
             this.showArtistPanel = true;
             this.currentArtist = this.artistsObject[member_id];
+        },
+
+        // pass on up to parent
+        updateItinerary() {
+            var memberID = this.currentArtist["member_id"];
+            console.log("+------------+");
+            console.log(this.itineraryUpdateDetails);
+            this.$emit("update-itinerary", {
+                memberID: memberID,
+                details: this.itineraryUpdateDetails,
+            });
         },
     },
 

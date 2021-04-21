@@ -16,11 +16,12 @@
                 </li>
             </ul>
         </nav>
+        <hr />
         <!-- Show the routed component -->
         <router-view
             v-on:add-to-itinerary="addToItinerary($event)"
             v-on:remove-from-itinerary="removeFromItinerary($event)"
-            v-on:update-itinerary="addToItinerary($event)"
+            v-on:update-itinerary="updateItinerary($event)"
             v-bind:artist-data="artistData"
             v-bind:itinerary-details="itinerary"
             v-bind:messages="messages"
@@ -48,7 +49,7 @@ export default {
                 "Browse Artists": "/browse-artists",
                 Itinerary: "/itinerary",
             },
-            userID: 4,
+            userID: 5,
             errors: "",
             showConfirmation: false,
             imageBaseUrl: "https://www.somervilleopenstudios.org",
@@ -82,7 +83,7 @@ export default {
             var oneItinerary = {
                 member_id: memberID,
                 user_id: this.userID,
-                visited: true,
+                visited: false,
             };
             axios.post("/itinerary", oneItinerary).then((response) => {
                 if (response.data.errors) {
@@ -96,8 +97,6 @@ export default {
         },
 
         removeFromItinerary(memberID) {
-            //todo lookup itinerary_if
-
             this.messages.push("*** removing id : " + memberID);
 
             // there should only be on..  But lets remove all matching.
@@ -114,11 +113,42 @@ export default {
                             } else {
                                 // reload..  Technically we could just remove from the array.. But its
                                 // another check
-                                this.loadItinerary();
                             }
                         });
                 }
             }
+            this.loadItinerary();
+        },
+        updateItinerary(updateDetails) {
+            console.log("*** Updating Itinerary ");
+            console.log(updateDetails["memberID"]);
+            console.log(updateDetails["details"]);
+            var memberID = updateDetails.memberID;
+            var updateData = {
+                user_id: this.userID,
+                visited: true,
+                member_id: memberID,
+                rating: updateDetails.details.rating,
+                comment: updateDetails.details.comment,
+            };
+            console.log(updateData);
+            for (var i = 0; i < this.itinerary.length; i++) {
+                // find mathcing ...
+                if (memberID == this.itinerary[i].member_id) {
+                    axios
+                        .put("/itinerary/" + this.itinerary[i].id, updateData)
+                        .then((response) => {
+                            if (response.data.errors) {
+                                this.errors = response.data.errors;
+                                this.showConfirmation = false;
+                            } else {
+                                // reload..  Technically we could just remove from the array.. But its
+                                // another check
+                            }
+                        });
+                }
+            }
+            this.loadItinerary();
         },
     },
 };

@@ -139,7 +139,6 @@
             value="Other "
             v-model="checkedGenres"
         />
-        <label for="Other"> Other </label>
 
         <div id="searchSelection">
             {{ checkedGenres }}
@@ -148,9 +147,6 @@
         <h2>List counts</h2>
         Total Artists :{{ artistCount }}
 
-        <button v-on:click="$emit('add-to-itinerary', artistCount)">
-            Emit to add to itinerary
-        </button>
         <ul>
             <li
                 v-for="message in messages"
