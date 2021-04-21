@@ -151,7 +151,7 @@ export default {
             var memberID = updateDetails.memberID;
             var updateData = {
                 user_id: this.userID,
-                visited: true,
+                visited: updateDetails.visited,
                 member_id: memberID,
                 rating: updateDetails.details.rating,
                 comment: updateDetails.details.comment,

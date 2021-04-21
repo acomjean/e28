@@ -5,8 +5,8 @@
 
         <div v-if="itineraryDetails.length == 0">
             <p>
-                <b> you have no artists in your itinerary</b> go the the Browse
-                Artists Page to add some
+                <b> you have no unvisited artists in your itinerary</b> go the
+                the Browse Artists Page to add some
             </p>
         </div>
 
@@ -44,13 +44,13 @@
                             class="select-button"
                             v-on:click="updateItinerary('add')"
                         >
-                            Save/ Close
+                            Save / Close
                         </button>
                         <button
                             class="select-button"
-                            v-on:click="updateItinerary"
+                            v-on:click="updateItineraryGoNext('add')"
                         >
-                            Save/ Visit Next
+                            Save / Visit Next
                         </button>
                     </p>
                 </div>
@@ -224,6 +224,25 @@ export default {
             });
 
             this.showArtistPanel = false;
+        },
+
+        updateItineraryGoNext(visited) {
+            this.updateItinerary(visited);
+            var memberID = this.currentArtist["member_id"];
+            var memberIDsForNext = this.artistsToVisit.filter(
+                (itin) => itin.member_id != memberID
+            );
+
+            if (memberIDsForNext.length > 0) {
+                // Get randmo
+                var item =
+                    memberIDsForNext[
+                        Math.floor(Math.random() * memberIDsForNext.length)
+                    ];
+                this.showArtist(item.member_id);
+            } else {
+                this.showArtistPanel = false;
+            }
         },
     },
 
