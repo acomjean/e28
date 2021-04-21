@@ -1,4 +1,4 @@
 export const axios = require('axios').create({
-	baseURL: 'http://e28api.localhost',
+	baseURL: process.env.VUE_APP_API_URL ?? 'http://e28api.aramcomjean.com',
 	responseType: 'json'
-    })
+})
