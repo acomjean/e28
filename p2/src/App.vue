@@ -64,7 +64,7 @@ export default {
                 "Browse Artists": "/browse-artists",
                 Itinerary: "/itinerary",
             },
-            userID: 6,
+            userID: 7,
             errors: "",
             showConfirmation: false,
             imageBaseUrl: "https://www.somervilleopenstudios.org",
