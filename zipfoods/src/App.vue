@@ -19,10 +19,7 @@
             </ul>
         </nav>
 
-        <router-view
-            v-bind:products="products"
-            v-on:update-products="loadProducts"
-        ></router-view>
+        <router-view v-on:update-products="loadProducts"></router-view>
     </div>
 </template>
 

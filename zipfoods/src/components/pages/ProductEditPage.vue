@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h2>Add a Product {{id}}</h2>
+        <h2>Add a Product {{ id }}</h2>
 
         <div id="inputs">
             <label for="name">
@@ -94,7 +94,7 @@ export default {
     },
     methods: {
         addProduct() {
-            axios.put("/product/"+this.id, this.product).then((response) => {
+            axios.put("/product/" + this.id, this.product).then((response) => {
                 if (response.data.errors) {
                     this.errors = response.data.errors;
                     this.showConfirmation = false;
@@ -119,13 +119,11 @@ export default {
     },
     computed: {
         product() {
-            console.log("products-in edit");
-            console.log(this.products);
-            if (this.products && this.products[0]){
-            return this.products.filter((product) => {
-               return product.id == this.id;
-            }, this.id)[0];
-            }else {
+            if (this.products && this.products[0]) {
+                return this.products.filter((product) => {
+                    return product.id == this.id;
+                }, this.id)[0];
+            } else {
                 return [];
             }
         },
