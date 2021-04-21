@@ -25,7 +25,7 @@
                                         .rating == null
                                 "
                             >
-                                Visited/ Not Rated
+                                Visited
                             </div>
                             <div v-else>
                                 Rating :

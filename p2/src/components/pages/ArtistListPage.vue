@@ -145,26 +145,32 @@
                 <label for="Video"> Video </label>
             </div>
         </div>
-        <div v-if="checkedGenres.length == 0">
-            <b> select some mediums above to see art</b>
+        <div v-if="checkedGenres.length == 0" class="info">
+            <b> Pelect some mediums above</b>
         </div>
 
-        <h2>List counts</h2>
-        <p>
-            Total Artists :{{ artistCount }}<br />
-            Artists In Your Itinerary: {{ itineraryDetails.length }}<br />
-            Artists you haven't viewed: {{ artistsToVisit.length }}<br />
-        </p>
-
-        <div v-if="itineraryDetails.length > 0">
-            You can virtually visit artists in your Itinerary
-            <button class="select-button">
-                <router-link to="/itinerary">
-                    Go Browse Art by the Artists you've selected in Detail
-                </router-link>
-            </button>
+        <h4>List counts</h4>
+        <div class="flex-container">
+            <div class="flex-column">
+                <p>
+                    Total Artists :{{ artistCount }}<br />
+                    Artists In Your Itinerary: {{ itineraryDetails.length
+                    }}<br />
+                    Artists in itinerary not visited: {{ artistsToVisit.length
+                    }}<br />
+                </p>
+            </div>
+            <div class="flex-column">
+                <div v-if="itineraryDetails.length > 0">
+                    You can virtually visit artists in your Itinerary <br />
+                    <button class="select-button">
+                        <router-link to="/itinerary">
+                            Visit Artists In You Itinerary
+                        </router-link>
+                    </button>
+                </div>
+            </div>
         </div>
-
         <artist-grid
             v-on:add-to-itinerary="addToItinerary($event)"
             v-on:remove-from-itinerary="removeFromItinerary($event)"
@@ -271,5 +277,16 @@ export default {
 
 .flex-column {
     flex: 1;
+}
+
+.warning {
+    background: rgba(244, 215, 201, 0.37);
+    color: #d93025;
+    border-color: #d93025;
+}
+.info {
+    background: rgba(186, 208, 228, 0.37);
+    color: #00539f;
+    border-color: #00539f;
 }
 </style>

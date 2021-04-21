@@ -21,22 +21,15 @@
                 <hr />
                 <div v-if="showForm">
                     <p>
-                        Rate and make notes about this artists for your future
-                        reference.
                         <br />
-                        All fields are optional. You can mark this artist as
-                        visited by clicking the Complete Visit Button.
+                        Add a comment (optional)
                         <br />
-                        <label for="rating">Rating (out of 5): </label>
-
                         <input
-                            type="number"
+                            type="hidden"
                             v-model="itineraryUpdateDetails.rating"
-                            id="price"
+                            id="rating"
                         />
-                    </p>
-                    <br />
-                    <p>
+
                         <label for="comment">Comment</label>
                         <textarea
                             style="width: 200px; height: 50px"
@@ -49,21 +42,22 @@
                         <br />
                         <button
                             class="select-button"
+                            v-on:click="updateItinerary('add')"
+                        >
+                            Save/ Close
+                        </button>
+                        <button
+                            class="select-button"
                             v-on:click="updateItinerary"
                         >
-                            Save/ Complete Visit
+                            Save/ Visit Next
                         </button>
                     </p>
                 </div>
 
                 <div v-else>
-                    <h4>Previous Reviewed:</h4>
-                    <p>
-                        <b>Stars:</b>
-                        {{
-                            itineraryDetailsById[currentArtist.member_id].rating
-                        }}
-                    </p>
+                    <h4>Previous Visit</h4>
+
                     <p>
                         <b>Comment:</b>
                         {{
@@ -71,6 +65,12 @@
                                 .comment
                         }}
                     </p>
+                    <button
+                        class="select-button"
+                        v-on:click="updateItinerary('remove')"
+                    >
+                        UnVisit
+                    </button>
                 </div>
             </div>
 
@@ -82,9 +82,11 @@
                     <div v-if="artistsToVisit.length == 0">
                         <b>
                             You have no Artists in you Itinerary.<br />
-                            <router-link to="/browse-artists">
-                                Go Browse the Artists to add some
-                            </router-link>
+                            <button class="select-button">
+                                <router-link to="/browse-artists">
+                                    Go Browse the Artists to add some
+                                </router-link>
+                            </button>
                         </b>
                     </div>
                     <ul class="">
@@ -123,14 +125,30 @@
                         v-bind:key="oneArtist.id"
                     >
                         <div>
-                            {{
-                                artistsObject[oneArtist.member_id]
-                                    .PublicFirstName
-                            }}
-                            {{
-                                artistsObject[oneArtist.member_id]
-                                    .PublicLastName
-                            }}
+                            <b>
+                                {{
+                                    artistsObject[oneArtist.member_id]
+                                        .PublicFirstName
+                                }}
+                                {{
+                                    artistsObject[oneArtist.member_id]
+                                        .PublicLastName
+                                }}<br />
+                            </b>
+
+                            <span
+                                v-if="
+                                    itineraryDetailsById[oneArtist.member_id]
+                                        .comment != null
+                                "
+                            >
+                                Comment:
+
+                                {{
+                                    itineraryDetailsById[oneArtist.member_id]
+                                        .comment
+                                }}
+                            </span>
                         </div>
                         <div>
                             <button
@@ -159,7 +177,7 @@ export default {
             showArtistPanel: false,
             showForm: false,
             currentArtist: {},
-            itineraryUpdateDetails: { detail: "", comment: "", rating: "" },
+            itineraryUpdateDetails: { comment: "", rating: "" },
             errors: null,
         };
     },
@@ -188,13 +206,23 @@ export default {
             this.showForm = false;
             this.currentArtist = this.artistsObject[member_id];
         },
-        // pass on up to parent
-        updateItinerary() {
+
+        // Save information on form
+        updateItinerary(visited) {
             var memberID = this.currentArtist["member_id"];
+
+            var localVisit = true;
+            var localDetails = this.itineraryUpdateDetails;
+            if (visited == "remove") {
+                localVisit = false;
+                localDetails = { comment: "", rating: "" };
+            }
             this.$emit("update-itinerary", {
                 memberID: memberID,
-                details: this.itineraryUpdateDetails,
+                visited: localVisit,
+                details: localDetails,
             });
+
             this.showArtistPanel = false;
         },
     },
@@ -260,10 +288,11 @@ export default {
 .itin-item {
     width: 50%;
     flex-basis: 1;
+    margin: 10px;
 }
 .artist-v-list {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
     border-bottom: 0.5px solid lightgray;
 }

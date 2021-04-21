@@ -1,25 +1,41 @@
 <template>
     <div id="artist-slideshow">
-        <h3>
+        <h2>
             {{ oneArtistDetail.PublicFirstName }}
             {{ oneArtistDetail.PublicLastName }}
-        </h3>
-        <p>{{ oneArtistDetail.ShortDescription }}</p>
-        <div v-if="oneArtistDetail.image_data.length > 0">
-            <img
-                :src="getPic()"
-                v-bind:alt="oneArtistDetail.PublicLastName"
-                style="max-height: 35vh"
-            />
-            <div v-if="oneArtistDetail.image_data.length > 1">
-                <div>
-                    Image Number: {{ imageNumber }} of
-                    {{ maxImageNumber }}
+        </h2>
+        <p>
+            <em>{{ oneArtistDetail.ShortDescription }}</em>
+        </p>
 
-                    <button style="margin: 10px" v-on:click="nextImage()">
-                        NEXT >>
-                    </button>
+        <div class="flex-container">
+            <div v-if="oneArtistDetail.image_data.length > 0">
+                <div class="flex-column2">
+                    <img
+                        :src="getPic()"
+                        v-bind:alt="oneArtistDetail.PublicLastName"
+                        style="max-height: 35vh"
+                    />
+                    <div v-if="oneArtistDetail.image_data.length > 1">
+                        <div>
+                            Image Number: {{ imageNumber }} of
+                            {{ maxImageIndex }}
+
+                            <button
+                                class="select-button"
+                                v-on:click="nextImage()"
+                            >
+                                NEXT >>
+                            </button>
+                        </div>
+                    </div>
                 </div>
+            </div>
+            <div class="flex-column1">
+                <b>Name: </b>{{ oneArtistDetail.image_data[imageIndex].Title
+                }}<br />
+                <b>Medium: </b>{{ oneArtistDetail.image_data[imageIndex].Medium
+                }}<br />
             </div>
         </div>
     </div>
@@ -54,10 +70,6 @@ export default {
             return this.oneArtistDetail.image_data.length;
         },
 
-        maxImageNumber() {
-            return this.oneArtistDetail.image_data.length + 1;
-        },
-
         imageNumber() {
             return this.imageIndex + 1;
         },
@@ -80,19 +92,18 @@ export default {
 </script>
 
 <style scoped>
-button {
-    display: inline-block;
-    border: none;
-    padding: 0.2rem 0.3rem;
-    margin: 0;
-    text-decoration: none;
-    background: #dcdfe4;
-    color: #777777;
-    font-family: sans-serif;
-    font-size: 1rem;
-    text-align: center;
+.flex-container {
+    display: flex;
+    width: 100%;
+    align-items: center;
 }
-button:hover {
-    color: #975a5a;
+
+.flex-column1 {
+    flex: 1;
+    padding: 15px;
+    margin: 15px;
+}
+.flex-column2 {
+    flex: 3;
 }
 </style>
