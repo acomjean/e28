@@ -9,6 +9,7 @@ VARIABLES
 
     /* https://clrs.cc/ */
     --blue: #0074D9;
+    --dark-blue: #044e8f;
     --light-blue: #CAE9FB;
     --teal: #39CCCC;
     --green: #2ECC40;
@@ -22,6 +23,7 @@ VARIABLES
     --white: #FFFFFF;
     --silver: #DDDDDD;
     --gray: #AAAAAA;
+    --darkgray: #808080;
     --black: #111111;
 }
 
@@ -52,6 +54,8 @@ html {
 body {
     /* Default font-size */
     font-size: 1.6rem;
+    width: 75%;
+    margin: auto;
 }
 
 h2 {
@@ -86,9 +90,9 @@ nav ul li {
 }
 
 nav ul li a:link,
-a:visited,
-a:hover,
-a:active {
+nav ul li a:visited,
+nav ul li a:hover,
+nav ul li a:active {
     /* Ref: https://stackoverflow.com/a/49783868 for why inline-block is added */
     display: inline-block;
     text-transform: capitalize;
@@ -100,15 +104,14 @@ a:active {
 }
 
 nav ul li a.router-link-active:link,
-a.router-link-active:visited,
-a.router-link-active:hover,
-a.router-link-active:active {
+nav ul li a.router-link-active:visited,
+nav ul li a.router-link-active:hover,
+nav ul li a.router-link-active:active {
     text-decoration: none;
     color: var(--black);
     background-color: var(--light-blue);
     cursor: inherit;
 }
-
 
 
 /*----------------------------------------------------
@@ -128,13 +131,108 @@ MISC
     margin: 5px;
 }
 
-.fade-enter-active,
-.fade-leave-active {
-    transition: opacity .5s;
-}
+/* 
+https://v3.vuejs.org/api/built-in-components.html#transition 
+https://v3.vuejs.org/guide/transitions-enterleave.html#transitioning-single-elements-components
+*/
 
-/* .fade-leave-active below version 2.1.8 */
-.fade-enter,
+/* Starting state */
+.fade-enter-from,
 .fade-leave-to {
     opacity: 0;
+}
+
+/* Active state */
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.5s ease;
+}
+
+
+
+
+/*----------------------------------------------------
+Forms
+-----------------------------------------------------*/
+form {
+    text-align: left;
+}
+
+label {
+    display: block;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    margin: 20px 0 5px 0;
+    font-weight: bold;
+}
+
+input[type=text],
+input[type=password],
+input[type=email],
+textarea {
+    font-size: 1.6rem;
+    padding: 5px;
+    width: 100%;
+    border: 1px solid var(--silver);
+}
+
+.form-input-error {
+    border: 1px solid var(--red);
+}
+
+label.form-checkbox-label {
+    text-transform: none;
+}
+
+.form-group {
+    margin: 20px 0;
+}
+
+.form-help {
+    font-size: 1.5rem;
+    color: var(--darkgray);
+    margin-top: 5px;
+}
+
+.form-feedback {
+    font-size: 1.3rem;
+    font-weight: bold;
+    padding: 10px 0;
+}
+
+.form-feedback-error {
+    color: var(--red);
+
+}
+
+.form-feedback-success {
+    color: var(--green);
+
+}
+
+button {
+    background-color: var(--blue);
+    font-size: 20px;
+    margin-top: 10px;
+    border-radius: 5px;
+    border: 0;
+    padding: 10px;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: var(--dark-blue);
+
+}
+
+input[type=checkbox],
+input[type=radio] {
+    vertical-align: middle;
+    position: relative;
+    bottom: 1px;
+}
+
+input[type=radio] {
+    bottom: 2px;
 }

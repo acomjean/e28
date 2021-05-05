@@ -1,0 +1,53 @@
+# Example 2
+**What is the Github URL of the project you are reviewing?**
+
+[redacted]
+
+**Are you able to produce any errors or unexpected results when using the site? Are there any errors or warnings in the console?**
+
+The index page, as implemented in MasterParkList.vue, logged "undefined" on the console upon the initial load, but this doesn't seem to be an error.  I would change the log level to "debug."  Ditto for "getting park data" in the same file.  When everything is working as expected, I generally expect to see no output.
+
+I encountered multiple console errors when I clicked on the detail page for the Abraham Lincoln Birthplace National Historical Park (link redacted), although the page seems display properly.
+
+- TypeError: t.parkData.entranceFees is undefined
+- Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://e28api.loc/comments. (Reason: CORS request did not succeed).
+- Uncaught (in promise) Error: Network Error
+
+Visiting a non-existent detail page (e.g. http://e28p2.yourdomain.com/parks/blablabla) yields a blank page body and a host of console errors.
+
+I was not able to submit a comment via ContactPage.vue.  Nothing happened when I clicked "submit," and I saw these console errors:
+- Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://e28api.loc/contactForm. (Reason: CORS request did not succeed).
+- Uncaught (in promise) Error: Network Error
+
+The production site seems to be using the local `baseURL` defined in app.js.
+
+**Are there any parts of the code that you found interesting or taught you something new?**
+
+I don't think so.  It's pretty standard stuff.
+
+**Are there any parts of the code that you don't understand?**
+
+MasterParkList.vue and ParkPage.vue each contain a method `isLoggedIn`, but neither uses it.  Ditto for `signOut` in MasterParkList.vue and the computed value `parkComments2` in ParkPage.vue.  Am I missing something?
+
+**Are there any parts of the code that you feel could be written in a more efficient or clearer manner?**
+
+MasterParkList.vue's template explicitly creates 10 button elements.  I would have used a v-for directive for brevity.  Something like this (I didn't test this code):
+```js
+<button v-for="i in [1,2,...,10]" @click="changeResults(i)">{{ i }}</button>
+```
+
+This button creation occurs twice in the same SFC, which suggests to me that it might be worth creating a component for the buttons.
+
+Also in MasterParkList.vue, a call to `axios.get` hard-codes URL and API key parameter values.  Things like that are usually better as constants.
+
+**Are there aspects of the code that you feel were not self-evident and would benefit from comments?**
+
+Maybe comment on the unused methods if they are there for a reason.
+
+**Are there any best practices discussed in course material that you feel were not addressed in the code?**
+
+The production site seems to be using the local `baseURL` defined in app.js.  The course material discusses having separate environment files for development and production.
+
+**Do you have any additional comments not covered in the above questions?**
+
+Now I know that the National Park Service has an API.

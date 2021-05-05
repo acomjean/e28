@@ -1,10 +1,16 @@
 <template>
     <div class="show-product">
-        <div class="name">{{ product.name }}</div>
-        <img class="thumb" v-bind:src="imgSrc" />
+        <div class="name" data-test="product-name">{{ product.name }}</div>
+        <img
+            class="thumb"
+            v-bind:src="imgSrc"
+            v-bind:data-test="'product-image-' + product.id"
+        />
 
         <div v-if="detailed">
-            <div class="price">${{ product.price }}</div>
+            <div class="price" data-test="product-price">
+                ${{ product.price }}
+            </div>
             <p class="description">{{ product.description }}</p>
         </div>
     </div>
@@ -42,17 +48,20 @@ export default {
     margin: 5px 0 10px 0;
     vertical-align: baseline;
 }
+
 .thumb {
     width: 75%;
     max-width: 300px;
     border-radius: var(--radius);
 }
+
 .description {
     margin: auto;
     text-align: left;
     font-style: italic;
     line-height: 1.5;
 }
+
 .price {
     font-family: var(--serif-font);
     font-weight: bold;

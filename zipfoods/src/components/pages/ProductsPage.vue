@@ -7,6 +7,7 @@
                 v-for="product in products"
                 v-bind:to="'/product/' + product.id"
                 v-bind:key="product.id"
+                data-test="product-link"
             >
                 <show-product
                     v-bind:product="product"
@@ -19,18 +20,19 @@
 
 <script>
 import ShowProduct from "@/components/ShowProduct.vue";
+
 export default {
     components: {
         "show-product": ShowProduct,
     },
-    props: {
-        products: {
-            type: Array,
-            default: null,
-        },
-    },
+    props: {},
     data() {
         return {};
+    },
+    computed: {
+        products() {
+            return this.$store.state.products;
+        },
     },
 };
 </script>
@@ -42,6 +44,7 @@ export default {
     justify-content: center;
     text-align: center;
 }
+
 a.product-link:link,
 a.product-link:visited,
 a.product-link:active,
@@ -56,6 +59,7 @@ a.product-link:hover {
     width: 30%;
     min-width: 300px;
 }
+
 a.product-link:hover {
     border: 1px solid var(--black);
 }

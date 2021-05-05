@@ -3,7 +3,11 @@
         <h2>Featured Products</h2>
 
         <ul class="clean-list">
-            <li v-for="product in featuredProducts" v-bind:key="product.id">
+            <li
+                v-for="product in featuredProducts"
+                v-bind:key="product.id"
+                data-test="featured-product"
+            >
                 {{ product.name }}
             </li>
         </ul>
@@ -16,9 +20,6 @@ export default {
         category: {
             type: String,
         },
-        products: {
-            type: Array,
-        },
     },
     data() {
         return {};
@@ -26,8 +27,13 @@ export default {
     computed: {
         featuredProducts() {
             return this.products.filter((product) => {
-                return product.categories.includes(this.category);
+                if (product.categories) {
+                    return product.categories.includes(this.category);
+                }
             }, this.category);
+        },
+        products() {
+            return this.$store.state.products;
         },
     },
 };
