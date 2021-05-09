@@ -242,18 +242,20 @@ export default {
                 return filtered;
             }
         },
+
+        itineraryDetails() {
+            return this.$store.state.itineraryArray;
+        },
+
+        itineraryDetailsById() {
+            return this.$store.getters.itineraryByMemberID();
+        },
     },
 
     props: {
         artistData: {
             type: Object,
             default: null,
-        },
-        itineraryDetails: {
-            type: Array,
-        },
-        itineraryDetailsById: {
-            type: Object,
         },
         messages: {
             type: Array,

@@ -75,11 +75,11 @@ export default {
         },
 
         addToItinerary(memberID) {
-            this.$emit("add-to-itinerary", memberID);
+            this.$store.dispatch("addToItinerary", memberID);
         },
 
         removeFromItinerary(memberID) {
-            this.$emit("remove-from-itinerary", memberID);
+            this.$store.dispatch("removeFromItinerary", memberID);
         },
 
         checkIfInItinerary(memberID) {
@@ -112,6 +112,14 @@ export default {
             }
             return filtered;
         },
+
+        itineraryDetails() {
+            return this.$store.state.itineraryArray;
+        },
+
+        itineraryDetailsById() {
+            return this.$store.getters.itineraryByMemberID();
+        },
     },
 
     props: {
@@ -120,12 +128,6 @@ export default {
         },
         imgBaseUrl: {
             type: String,
-        },
-        itineraryDetails: {
-            type: Array,
-        },
-        itineraryDetailsById: {
-            type: Object,
         },
     },
     watch: {

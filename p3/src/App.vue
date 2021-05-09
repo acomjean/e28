@@ -47,7 +47,7 @@
 </template>
 <script>
 import artistData from "@/common/all_artists_2021.json";
-import { axios } from "@/common/app.js";
+//import { axios } from "@/common/app.js";
 
 export default {
     name: "App",
@@ -71,10 +71,6 @@ export default {
         };
     },
 
-    mounted() {
-        this.loadItinerary();
-    },
-
     computed: {
         itineraryByMemberID() {
             var itinByID = {};
@@ -85,15 +81,21 @@ export default {
             return itinByID;
         },
     },
+    mounted() {
+        this.loadItinerary();
+    },
 
     methods: {
+        loadItinerary() {
+            this.$store.dispatch("fetchItinerary");
+        },
         clearMessages() {
             this.messages = [];
         },
 
         // Load user for userID (userID hardcoded currently)
-
-        loadItinerary() {
+        /*
+        loadItinerary2() {
             axios
                 .get("itinerary/query", {
                     params: {
@@ -176,6 +178,7 @@ export default {
                 }
             }
         },
+        */
     },
 };
 </script>

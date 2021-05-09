@@ -10,7 +10,7 @@ export const store = createStore({
     plugins,
     state() {
         return {
-            user: 5,
+            user: 120,
             cartCount: 5,
             itineraryArray: [],
         }
@@ -29,7 +29,7 @@ export const store = createStore({
         fetchItinerary(context) {
             axios.get("itinerary/query", {
                 params: {
-                    user_id: this.user,
+                    user_id: context.state.user,
                 },
             }).then((response) => {
                 console.log("+-fetchItinerary    -------------+  ");
@@ -38,6 +38,80 @@ export const store = createStore({
                 context.commit('setItinerary', response.data.itinerary);
             });
         },
+
+
+        addToItinerary(context, memberID) {
+            console.log("adding artist : " + memberID);
+            var oneItinerary = {
+                member_id: memberID,
+                user_id: context.state.user,
+                visited: false,
+            };
+            axios.post("/itinerary", oneItinerary).then((response) => {
+                if (response.data.errors) {
+                    // There is nothing else to do.. They clicked a button ajax failed.  
+                    // Report bug is it.
+                    alert("error saving");
+                } else {
+                    // reload.. The truth is the server.
+                    context.dispatch('fetchItinerary')
+                }
+            });
+        },
+
+        removeFromItinerary(context, memberID) {
+            console.log("removing id : " + memberID);
+
+            // there should only be on..  But lets remove all matching.
+
+            for (var i = 0; i < context.state.itineraryArray.length; i++) {
+                if (memberID == context.state.itineraryArray[i].member_id) {
+                    axios
+                        .delete("/itinerary/" + context.state.itineraryArray[i].id)
+                        .then((response) => {
+                            if (response.data.errors) {
+                                alert("could not remove");
+
+                            } else {
+                                // reload..  Technically we could just remove from the array.. But its
+                                // another check
+                                context.dispatch('fetchItinerary');
+                            }
+                        });
+                }
+            }
+        },
+
+        updateItinerary(context, updateDetails) {
+            var memberID = updateDetails.memberID;
+            var updateData = {
+                user_id: this.userID,
+                visited: updateDetails.visited,
+                member_id: memberID,
+                rating: updateDetails.details.rating,
+                comment: updateDetails.details.comment,
+            };
+
+            for (var i = 0; i < this.itinerary.length; i++) {
+                // find mathcing itinerary records. update
+
+                if (memberID == this.itinerary[i].member_id) {
+                    axios
+                        .put("/itinerary/" + this.itinerary[i].id, updateData)
+                        .then((response) => {
+                            if (response.data.errors) {
+                                this.errors = response.data.errors;
+                                this.showConfirmation = false;
+                            } else {
+                                // reload..  Technically we could just remove from the array.. But its
+                                // another check
+                                this.loadItinerary();
+                            }
+                        });
+                }
+            }
+        },
+
     },
 
     getters: {

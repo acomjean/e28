@@ -183,16 +183,13 @@ export default {
     },
 
     methods: {
-        // pass on up to parent
-        addToItinerary(member_id) {
-            this.$emit("add-to-itinerary", member_id);
+        addToItinerary(memberID) {
+            this.$store.dispatch("addToItinerary", memberID);
         },
 
-        // pass on up to parent
-        removeFromItinerary(member_id) {
-            this.$emit("remove-from-itinerary", member_id);
+        removeFromItinerary(memberID) {
+            this.$store.dispatch("removeFromItinerary", memberID);
         },
-
         // show the artists mini -statement and images - and form to fill out.
         showArtist(member_id) {
             this.showArtistPanel = true;
@@ -273,18 +270,20 @@ export default {
 
             return filtered;
         },
+
+        itineraryDetails() {
+            return this.$store.state.itineraryArray;
+        },
+
+        itineraryDetailsById() {
+            return this.$store.getters.itineraryByMemberID();
+        },
     },
 
     props: {
         artistData: {
             type: Object,
             default: null,
-        },
-        itineraryDetails: {
-            type: Array,
-        },
-        itineraryDetailsById: {
-            type: Object,
         },
         messages: {
             type: Array,
