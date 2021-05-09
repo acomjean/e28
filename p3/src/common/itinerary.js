@@ -11,7 +11,6 @@ export const store = createStore({
     state() {
         return {
             user: 120,
-            cartCount: 5,
             itineraryArray: [],
         }
     },
@@ -85,27 +84,31 @@ export const store = createStore({
         updateItinerary(context, updateDetails) {
             var memberID = updateDetails.memberID;
             var updateData = {
-                user_id: this.userID,
+                user_id: context.state.user,
                 visited: updateDetails.visited,
                 member_id: memberID,
                 rating: updateDetails.details.rating,
                 comment: updateDetails.details.comment,
             };
 
-            for (var i = 0; i < this.itinerary.length; i++) {
+            console.log(">>>>>>>>>>>>>>>>>>>");
+            console.log(updateData);
+            console.log(">>>>>>>>>>>>>>>>>>>");
+
+            for (var i = 0; i < context.state.itineraryArray.length; i++) {
                 // find mathcing itinerary records. update
 
-                if (memberID == this.itinerary[i].member_id) {
+                if (memberID == context.state.itineraryArray[i].member_id) {
                     axios
-                        .put("/itinerary/" + this.itinerary[i].id, updateData)
+                        .put("/itinerary/" + context.state.itineraryArray[i].id, updateData)
                         .then((response) => {
                             if (response.data.errors) {
-                                this.errors = response.data.errors;
-                                this.showConfirmation = false;
+                                context.state.errors = response.data.errors;
+                                context.state.showConfirmation = false;
                             } else {
                                 // reload..  Technically we could just remove from the array.. But its
                                 // another check
-                                this.loadItinerary();
+                                context.dispatch('fetchItinerary');
                             }
                         });
                 }

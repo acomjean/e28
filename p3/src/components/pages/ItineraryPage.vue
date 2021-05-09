@@ -214,7 +214,7 @@ export default {
                 localVisit = false;
                 localDetails = { comment: "", rating: "" };
             }
-            this.$emit("update-itinerary", {
+            this.$store.dispatch("updateItinerary", {
                 memberID: memberID,
                 visited: localVisit,
                 details: localDetails,
