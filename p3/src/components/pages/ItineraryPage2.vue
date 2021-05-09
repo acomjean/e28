@@ -4,6 +4,8 @@
         <p>userID {{ userID }}</p>
 
         Itinerary Array: {{ itineraryArray }}
+        <hr />
+        Itinerary Array2: {{ itineraryArrayByMemberID }}
     </div>
 </template>
 <script>
@@ -18,6 +20,9 @@ export default {
         },
         itineraryArray() {
             return this.$store.state.itineraryArray;
+        },
+        itineraryArrayByMemberID() {
+            return this.$store.getters.itineraryByMemberID();
         },
     },
 

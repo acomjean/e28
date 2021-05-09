@@ -24,6 +24,8 @@ export const store = createStore({
     },
 
     actions: {
+
+        // get the itinerary via ajax (axios)
         fetchItinerary(context) {
             axios.get("itinerary/query", {
                 params: {
@@ -37,6 +39,20 @@ export const store = createStore({
             });
         },
     },
+
+    getters: {
+        // Take the itinerary and index it by the artist id (Memeber_id)
+
+        itineraryByMemberID: (state) => () => {
+            var itinByID = {};
+            for (var i = 0; i < state.itineraryArray.length; i++) {
+                var memberID = state.itineraryArray[i]["member_id"];
+                itinByID[memberID] = state.itineraryArray[i];
+            }
+
+            return itinByID;
+        }
+    }
 
 })
 
