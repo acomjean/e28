@@ -130,6 +130,7 @@ export default {
             type: String,
         },
     },
+
     watch: {
         artistList: function () {
             // get list of indexes into an array

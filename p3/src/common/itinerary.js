@@ -5,6 +5,7 @@ import { axios } from "@/common/app.js";
 // Only load the createLogger plugin when in development mode
 const debug = process.env.NODE_ENV !== 'production';
 const plugins = debug ? [createLogger({})] : [];
+import artistData from "@/common/all_artists_2021.json";
 
 export const store = createStore({
     plugins,
@@ -12,6 +13,8 @@ export const store = createStore({
         return {
             user: 120,
             itineraryArray: [],
+            imageBaseUrl: "https://www.somervilleopenstudios.org",
+            artistData: artistData
         }
     },
 
@@ -31,9 +34,6 @@ export const store = createStore({
                     user_id: context.state.user,
                 },
             }).then((response) => {
-                console.log("+-fetchItinerary    -------------+  ");
-                console.log(response.data.itinerary);
-                console.log("+- -------------    -------------+  ");
                 context.commit('setItinerary', response.data.itinerary);
             });
         },
@@ -91,12 +91,9 @@ export const store = createStore({
                 comment: updateDetails.details.comment,
             };
 
-            console.log(">>>>>>>>>>>>>>>>>>>");
-            console.log(updateData);
-            console.log(">>>>>>>>>>>>>>>>>>>");
-
             for (var i = 0; i < context.state.itineraryArray.length; i++) {
-                // find mathcing itinerary records. update
+
+                // find mathcing itinerary records. update all
 
                 if (memberID == context.state.itineraryArray[i].member_id) {
                     axios

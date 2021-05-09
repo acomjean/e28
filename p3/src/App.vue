@@ -32,22 +32,23 @@
         </div>
 -->
         <!-- Show the routed component -->
-        <router-view
-            v-on:add-to-itinerary="addToItinerary($event)"
+        <!--  v-on:add-to-itinerary="addToItinerary($event)"
             v-on:remove-from-itinerary="removeFromItinerary($event)"
             v-on:update-itinerary="updateItinerary($event)"
+                        v-bind:itinerary-details="itinerary"
+            v-bind:itinerary-details-by-id="itineraryByMemberID" -->
+
+        <router-view
             v-bind:artist-data="artistData"
-            v-bind:itinerary-details="itinerary"
-            v-bind:itinerary-details-by-id="itineraryByMemberID"
-            v-bind:messages="messages"
             v-bind:image-base-url="imageBaseUrl"
+            v-bind:messages="messages"
         >
         </router-view>
     </div>
 </template>
 <script>
-import artistData from "@/common/all_artists_2021.json";
 //import { axios } from "@/common/app.js";
+import artistData from "@/common/all_artists_2021.json";
 
 export default {
     name: "App",

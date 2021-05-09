@@ -181,6 +181,50 @@ export default {
             errors: null,
         };
     },
+    computed: {
+        artistsToVisit() {
+            return this.itineraryDetails.filter((itin) => itin.visited == "0");
+        },
+
+        artistsVisited() {
+            return this.itineraryDetails.filter((itin) => itin.visited == "1");
+        },
+
+        // get the array of all artists
+        artistList() {
+            return this.artistData.artist_data;
+        },
+
+        // artists, indexed by the member ID
+
+        artistsObject() {
+            var filtered = {};
+            // generate a object where the key is the artists member_id
+            // saves lots of looping later.
+            for (var i = 0; i < this.artistList.length; i++) {
+                var memberID = this.artistList[i]["member_id"];
+                filtered[memberID] = this.artistList[i];
+            }
+
+            return filtered;
+        },
+
+        itineraryDetails() {
+            return this.$store.state.itineraryArray;
+        },
+
+        itineraryDetailsById() {
+            return this.$store.getters.itineraryByMemberID();
+        },
+
+        artistData() {
+            return this.$store.state.artistData;
+        },
+
+        imageBaseUrl() {
+            return this.$store.state.imageBaseUrl;
+        },
+    },
 
     methods: {
         addToItinerary(memberID) {
@@ -243,53 +287,9 @@ export default {
         },
     },
 
-    computed: {
-        artistsToVisit() {
-            return this.itineraryDetails.filter((itin) => itin.visited == "0");
-        },
-
-        artistsVisited() {
-            return this.itineraryDetails.filter((itin) => itin.visited == "1");
-        },
-
-        // get the array of all artists
-        artistList() {
-            return this.artistData.artist_data;
-        },
-
-        // artists, indexed by the member ID
-
-        artistsObject() {
-            var filtered = {};
-            // generate a object where the key is the artists member_id
-            // saves lots of looping later.
-            for (var i = 0; i < this.artistList.length; i++) {
-                var memberID = this.artistList[i]["member_id"];
-                filtered[memberID] = this.artistList[i];
-            }
-
-            return filtered;
-        },
-
-        itineraryDetails() {
-            return this.$store.state.itineraryArray;
-        },
-
-        itineraryDetailsById() {
-            return this.$store.getters.itineraryByMemberID();
-        },
-    },
-
     props: {
-        artistData: {
-            type: Object,
-            default: null,
-        },
         messages: {
             type: Array,
-        },
-        imageBaseUrl: {
-            type: String,
         },
     },
 };

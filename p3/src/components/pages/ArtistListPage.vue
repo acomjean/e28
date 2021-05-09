@@ -172,12 +172,8 @@
             </div>
         </div>
         <artist-grid
-            v-on:add-to-itinerary="addToItinerary($event)"
-            v-on:remove-from-itinerary="removeFromItinerary($event)"
             v-bind:artistList="filteredList"
             v-bind:imgBaseUrl="imageBaseUrl"
-            v-bind:itinerary-details="itineraryDetails"
-            v-bind:itinerary-details-by-id="itineraryDetailsById"
         >
         </artist-grid>
     </div>
@@ -250,18 +246,19 @@ export default {
         itineraryDetailsById() {
             return this.$store.getters.itineraryByMemberID();
         },
+
+        artistData() {
+            return this.$store.state.artistData;
+        },
+
+        imageBaseUrl() {
+            return this.$store.state.imageBaseUrl;
+        },
     },
 
     props: {
-        artistData: {
-            type: Object,
-            default: null,
-        },
         messages: {
             type: Array,
-        },
-        imageBaseUrl: {
-            type: String,
         },
     },
 
