@@ -1,4 +1,4 @@
-<!-- New User Page, From Zip Food -->
+<!-- New User Page, From Zip Food  with validator code added.-->
 <template>
     <div>
         <h2>Create New Account</h2>
@@ -101,7 +101,7 @@ export default {
                         this.showConfirmation = true;
 
                         // Fade out confirmation after 3 seconds
-                        setTimeout(() => (this.showConfirmation = false), 3000);
+                        setTimeout(() => (this.showConfirmation = false), 5000);
                     }
                 });
             } else {
@@ -112,7 +112,7 @@ export default {
         validate() {
             let validator = new Validator(this.user, {
                 name: "required|between:3,100",
-                email: "required|between:3,100",
+                email: "required|email",
                 password: "required|between:8,100",
             });
 

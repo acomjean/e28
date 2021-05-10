@@ -17,33 +17,12 @@
             </ul>
         </nav>
         <hr />
-        <!-- for now no messages. Till we get a better handle on them.
-        <div v-if="messages.length > 0">
-            <ul>
-                <li
-                    v-for="message in messages"
-                    v-bind:to="message"
-                    v-bind:key="message"
-                >
-                    {{ message }}
-                </li>
-            </ul>
-            <button v-on:click="clearMessages()">Clear</button>
-        </div>
--->
-        <!-- Show the routed component -->
-        <!--  v-on:add-to-itinerary="addToItinerary($event)"
-            v-on:remove-from-itinerary="removeFromItinerary($event)"
-            v-on:update-itinerary="updateItinerary($event)"
-                        v-bind:itinerary-details="itinerary"
-            v-bind:itinerary-details-by-id="itineraryByMemberID" -->
 
         <router-view v-bind:messages="messages"> </router-view>
     </div>
 </template>
 <script>
 //import { axios } from "@/common/app.js";
-import artistData from "@/common/all_artists_2021.json";
 
 export default {
     name: "App",
@@ -51,8 +30,6 @@ export default {
     data() {
         return {
             messages: [],
-            itinerary: [],
-            artistData: artistData,
             links: [
                 "Home",
                 "Browse Artists",
@@ -68,23 +45,10 @@ export default {
                 Login: "/login",
                 "New Account": "/new-login",
             },
-            userID: 7,
-            errors: "",
-            showConfirmation: false,
-            imageBaseUrl: "https://www.somervilleopenstudios.org",
         };
     },
 
-    computed: {
-        itineraryByMemberID() {
-            var itinByID = {};
-            for (var i = 0; i < this.itinerary.length; i++) {
-                var memberID = this.itinerary[i]["member_id"];
-                itinByID[memberID] = this.itinerary[i];
-            }
-            return itinByID;
-        },
-    },
+    computed: {},
     mounted() {
         this.loadItinerary();
     },
@@ -96,106 +60,19 @@ export default {
         clearMessages() {
             this.messages = [];
         },
-
-        // Load user for userID (userID hardcoded currently)
-        /*
-        loadItinerary2() {
-            axios
-                .get("itinerary/query", {
-                    params: {
-                        user_id: this.userID,
-                    },
-                })
-                .then((response) => {
-                    console.log();
-
-                    this.itinerary = response.data.itinerary;
-                });
-        },
-
-        addToItinerary(memberID) {
-            this.messages.push("adding artist : " + memberID);
-            var oneItinerary = {
-                member_id: memberID,
-                user_id: this.userID,
-                visited: false,
-            };
-            axios.post("/itinerary", oneItinerary).then((response) => {
-                if (response.data.errors) {
-                    this.errors = response.data.errors;
-                    this.showConfirmation = true;
-                } else {
-                    // reload..  We need the ID.
-                    this.loadItinerary();
-                }
-            });
-        },
-
-        removeFromItinerary(memberID) {
-            this.messages.push("removing id : " + memberID);
-
-            // there should only be on..  But lets remove all matching.
-
-            for (var i = 0; i < this.itinerary.length; i++) {
-                if (memberID == this.itinerary[i].member_id) {
-                    axios
-                        .delete("/itinerary/" + this.itinerary[i].id)
-                        .then((response) => {
-                            if (response.data.errors) {
-                                this.errors = response.data.errors;
-                                this.showConfirmation = false;
-                            } else {
-                                // reload..  Technically we could just remove from the array.. But its
-                                // another check
-                                this.loadItinerary();
-                            }
-                        });
-                }
-            }
-        },
-        updateItinerary(updateDetails) {
-            var memberID = updateDetails.memberID;
-            var updateData = {
-                user_id: this.userID,
-                visited: updateDetails.visited,
-                member_id: memberID,
-                rating: updateDetails.details.rating,
-                comment: updateDetails.details.comment,
-            };
-
-            for (var i = 0; i < this.itinerary.length; i++) {
-                // find mathcing itinerary records. update
-
-                if (memberID == this.itinerary[i].member_id) {
-                    axios
-                        .put("/itinerary/" + this.itinerary[i].id, updateData)
-                        .then((response) => {
-                            if (response.data.errors) {
-                                this.errors = response.data.errors;
-                                this.showConfirmation = false;
-                            } else {
-                                // reload..  Technically we could just remove from the array.. But its
-                                // another check
-                                this.loadItinerary();
-                            }
-                        });
-                }
-            }
-        },
-        */
     },
 };
 </script>
 
+// Were p3 now.. but the style carries over.
 <style src='@/assets/css/p2.css'></style>
-
 
 <style>
 [v-cloak] {
     display: none;
 }
 
-/* From zipfoods example */
+/* From zipfoods example for navigation header */
 
 nav ul {
     list-style-type: none;

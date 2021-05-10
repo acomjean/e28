@@ -286,12 +286,6 @@ export default {
             }
         },
     },
-
-    props: {
-        messages: {
-            type: Array,
-        },
-    },
 };
 </script>
 

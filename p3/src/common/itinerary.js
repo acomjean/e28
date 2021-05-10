@@ -32,8 +32,10 @@ export const store = createStore({
             console.log(payload);
             state.user = payload['id'];
             state.userData = payload;
-            // reset itinerary state.
-            state.itineraryArray = [];
+            // reset itinerary state if user has logged out. 
+            if (payload == false) {
+                state.itineraryArray = [];
+            }
         }
     },
 

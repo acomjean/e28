@@ -47,16 +47,3 @@
     </div>
 </template>
 
-<script>
-export default {
-    props: {
-        artists: {
-            type: Array,
-            default: null,
-        },
-    },
-};
-</script>
-
-<style scoped>
-</style>
