@@ -38,12 +38,7 @@
                         v-bind:itinerary-details="itinerary"
             v-bind:itinerary-details-by-id="itineraryByMemberID" -->
 
-        <router-view
-            v-bind:artist-data="artistData"
-            v-bind:image-base-url="imageBaseUrl"
-            v-bind:messages="messages"
-        >
-        </router-view>
+        <router-view v-bind:messages="messages"> </router-view>
     </div>
 </template>
 <script>
