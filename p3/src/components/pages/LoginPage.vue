@@ -1,17 +1,11 @@
 <template>
     <div id="login-page">
-        <div v-if="user">
-            <h2>Hi, {{ user.name }}!</h2>
+        <div v-if="userData">
+            <h2>Hi, {{ userData.name }}!</h2>
 
-            <div id="favorites">
-                <strong>Your Favorites</strong>
-                <p v-if="favorites && favorites.length == 0">
-                    No favorites yet.
-                </p>
-                <li v-for="(favorite, key) in favorites" v-bind:key="key">
-                    {{ favorite.name }}
-                </li>
-            </div>
+            <p>Your account is active. Please make an itinerary.</p>
+
+            <p>OR</p>
 
             <button v-on:click="logout" data-test="logout-button">
                 Logout
@@ -73,11 +67,8 @@ export default {
         };
     },
     computed: {
-        user() {
-            return this.$store.state.user;
-        },
-        products() {
-            return this.$store.state.products;
+        userData() {
+            return this.$store.state.userData;
         },
     },
     methods: {
@@ -85,6 +76,7 @@ export default {
             axios.post("login", this.data).then((response) => {
                 if (response.data.authenticated) {
                     this.$store.commit("setUser", response.data.user);
+                    this.$store.dispatch("fetchItinerary");
                 } else {
                     this.errors = response.data.errors;
                 }

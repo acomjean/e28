@@ -5,13 +5,16 @@ import { axios } from "@/common/app.js";
 // Only load the createLogger plugin when in development mode
 const debug = process.env.NODE_ENV !== 'production';
 const plugins = debug ? [createLogger({})] : [];
+
+// load artists data from file.  Static, but part of global state.
 import artistData from "@/common/all_artists_2021.json";
 
 export const store = createStore({
     plugins,
     state() {
         return {
-            user: 120,
+            user: null,
+            userData: null,
             itineraryArray: [],
             imageBaseUrl: "https://www.somervilleopenstudios.org",
             artistData: artistData
@@ -23,9 +26,33 @@ export const store = createStore({
             console.log("setProductssetItinerary");
             state.itineraryArray = payload;
         },
+
+        setUser(state, payload) {
+            console.log("setting user")
+            console.log(payload);
+            state.user = payload['id'];
+            state.userData = payload;
+            // reset itinerary state.
+            state.itineraryArray = [];
+        }
     },
 
     actions: {
+
+        // From ZipFoods 
+        authUser(context) {
+            return new Promise((resolve) => {
+                axios.post('auth').then((response) => {
+                    if (response.data.authenticated) {
+                        context.commit('setUser', response.data.user);
+                    } else {
+                        context.commit('setUser', false);
+                    }
+
+                    resolve();
+                });
+            });
+        },
 
         // get the itinerary via ajax (axios)
         fetchItinerary(context) {
@@ -41,6 +68,7 @@ export const store = createStore({
 
         addToItinerary(context, memberID) {
             console.log("adding artist : " + memberID);
+            console.log("for user : " + context.state.user);
             var oneItinerary = {
                 member_id: memberID,
                 user_id: context.state.user,

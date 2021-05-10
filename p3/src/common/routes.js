@@ -26,7 +26,7 @@ const router = createRouter({
         { path: '/create_account', component: ItineraryTest, props: false },
         { path: '/denied', component: ItineraryTest, props: false },
         {
-            path: '/new_login',
+            path: '/new-login',
             component: () => import('@/components/pages/LoginNewPage.vue'),
         },
     ]

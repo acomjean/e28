@@ -58,12 +58,20 @@ export default {
             messages: [],
             itinerary: [],
             artistData: artistData,
-            links: ["Home", "Browse Artists", "Itinerary"],
+            links: [
+                "Home",
+                "Browse Artists",
+                "Itinerary",
+                "Login",
+                "New Account",
+            ],
             /* Map links to  the appropriate component */
             paths: {
                 Home: "/",
                 "Browse Artists": "/browse-artists",
                 Itinerary: "/itinerary",
+                Login: "/login",
+                "New Account": "/new-login",
             },
             userID: 7,
             errors: "",
