@@ -18,6 +18,7 @@
                     id="BooksPaper"
                     value="Books+Paper"
                     v-model="checkedGenres"
+                    data-test="medium-books"
                 />
                 <label for="BooksPaper"> Books + Paper </label>
                 <br />

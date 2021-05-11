@@ -7,7 +7,7 @@
         </div>
         <ul class="thumb_container">
             <li v-for="i in artistIndexes" v-bind:key="artistIndexes[i]">
-                <div class="artistcard">
+                <div class="artistcard" data-test="artistcard">
                     <img
                         :src="getPic(artistList[i])"
                         v-bind:alt="artistList[i].PublicLastName"

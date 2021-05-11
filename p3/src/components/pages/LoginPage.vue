@@ -3,7 +3,7 @@
 <template>
     <div id="login-page">
         <div v-if="userData">
-            <h2>Welcome, {{ userData.name }}!</h2>
+            <h2 data-test="login-ok">Welcome, {{ userData.name }}!</h2>
 
             <p>Your account is active.</p>
 

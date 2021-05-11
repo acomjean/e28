@@ -8,6 +8,7 @@ import ArtistList from '@/components/pages/ArtistListPage.vue';
 import Itinerary from '@/components/pages/ItineraryPage.vue';
 import ItineraryTest from '@/components/pages/ItineraryPage2.vue';
 import Login from '@/components/pages/LoginPage.vue';
+import Logout from '@/components/pages/LogoutPage.vue';
 import LoginRequired from '@/components/pages/LoginRequiredPage.vue';
 
 
@@ -24,6 +25,7 @@ const router = createRouter({
         },
         { path: '/create-account', component: ItineraryTest, props: false },
         { path: '/login', component: Login, props: false },
+        { path: '/logout', component: Logout, props: false },
         { path: '/login-required', component: LoginRequired, props: false },
         {
             path: '/new-login',
