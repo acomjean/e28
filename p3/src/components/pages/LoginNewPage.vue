@@ -1,4 +1,5 @@
-<!-- New User Page, From Zip Food  with validator code added.-->
+<!-- New User Page, From Zip Foods  with validator code added.-->
+
 <template>
     <div>
         <h2>Create New Account</h2>
@@ -50,7 +51,7 @@
             </div>
             <div>
                 <button v-on:click="adduser" data-test="add-user-button">
-                    Add user
+                    Create New User
                 </button>
             </div>
             <div class="form-feedback-error" v-if="errors">
@@ -69,6 +70,7 @@ import Validator from "validatorjs";
 
 export default {
     components: {
+        // Common component for server baser validation reporting
         "error-field": ErrorField,
     },
     data() {
@@ -86,7 +88,9 @@ export default {
         adduser() {
             // js validate before server side validation
             if (this.validate()) {
+                // add user
                 axios.post("/register", this.user).then((response) => {
+                    // server side error handling
                     if (response.data.errors) {
                         this.errors = response.data.errors;
                         this.showConfirmation = false;
@@ -97,15 +101,13 @@ export default {
                             password: "",
                         };
 
-                        this.$emit("update-users");
                         this.showConfirmation = true;
+                        this.errors = "";
 
                         // Fade out confirmation after 3 seconds
                         setTimeout(() => (this.showConfirmation = false), 5000);
                     }
                 });
-            } else {
-                alert("fix errors");
             }
         },
 
@@ -131,6 +133,7 @@ export default {
 </script>
 
 <style scoped>
+/* Stack input boxed */
 #inputs {
     text-align: left;
     display: flex;
@@ -146,11 +149,22 @@ export default {
     margin-left: 10px;
     color: darkblue;
 }
-textarea {
-    height: 100px;
-}
 
 button {
-    margin-bottom: 10px;
+    margin-bottom: 15px;
+    padding: 10px;
+}
+
+.alert {
+    font-size: 1.2em;
+    padding: 10px;
+    background: papayawhip;
+}
+
+.form-feedback-error {
+    font-size: 1.2em;
+    color: red;
+    padding: 10px;
+    border: 1px solid darkred;
 }
 </style>

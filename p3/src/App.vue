@@ -3,7 +3,7 @@
         <!--
             <img alt="Vue logo" src="./assets/logo.png" />
         -->
-        <h2>Art Browser</h2>
+        <h1>Art Browser - Somerville Open Studios 2021</h1>
         <nav>
             <ul>
                 <li>
@@ -14,6 +14,8 @@
                         >{{ link }}
                     </router-link>
                 </li>
+                <li v-if="userData">User: {{ userData.name }}</li>
+                <li v-else>Not Logged In</li>
             </ul>
         </nav>
         <hr />
@@ -48,7 +50,11 @@ export default {
         };
     },
 
-    computed: {},
+    computed: {
+        userData() {
+            return this.$store.state.userData;
+        },
+    },
     mounted() {
         this.loadItinerary();
     },

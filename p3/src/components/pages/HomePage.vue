@@ -40,9 +40,10 @@
 
         <p>
             Start by
-            <a href="/browse-artists"
-                ><button class="select-button">Browsing the art</button></a
-            >
+
+            <router-link to="/browse-artists">
+                <button class="select-button">Browsing the art</button>
+            </router-link>
         </p>
     </div>
 </template>

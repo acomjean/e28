@@ -44,6 +44,12 @@ https://www.telerik.com/blogs/how-to-emit-data-in-vue-beyond-the-vuejs-documenta
 https://stackoverflow.com/questions/5915096/get-a-random-item-from-a-javascript-array
 https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
 
+
+p3
+https://stackoverflow.com/questions/45848974/call-an-action-from-within-another-action
+
+
+
 ## Notes for instructor
 
 * Based on the Somerville Open Studios Artists Browser: Designed and built by me ontop 

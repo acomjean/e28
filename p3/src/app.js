@@ -1,4 +1,3 @@
-import { reactive } from 'vue'
 
 
 export const axios = require('axios').create({

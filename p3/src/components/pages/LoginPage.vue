@@ -1,9 +1,26 @@
+<!-- Login modified from Zip Foods example -->
+
 <template>
     <div id="login-page">
         <div v-if="userData">
-            <h2>Hi, {{ userData.name }}!</h2>
+            <h2>Welcome, {{ userData.name }}!</h2>
 
-            <p>Your account is active. Please make an itinerary.</p>
+            <p>Your account is active.</p>
+
+            <ul>
+                <li>
+                    <router-link to="/browse-artists">
+                        Browse Artists to Add artists to you itinerary.
+                    </router-link>
+                </li>
+
+                <li v-if="itineraryDetails.length > 0">
+                    <router-link to="/itinerary">
+                        Visit Artists in your itinerary (currently
+                        {{ itineraryDetails.length }})
+                    </router-link>
+                </li>
+            </ul>
 
             <p>OR</p>
 
@@ -70,6 +87,9 @@ export default {
         userData() {
             return this.$store.state.userData;
         },
+        itineraryDetails() {
+            return this.$store.state.itineraryArray;
+        },
     },
     methods: {
         login() {
@@ -92,3 +112,11 @@ export default {
     },
 };
 </script>
+
+
+<style scoped>
+button {
+    margin-bottom: 15px;
+    padding: 10px;
+}
+</style>

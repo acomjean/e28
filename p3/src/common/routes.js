@@ -8,6 +8,7 @@ import ArtistList from '@/components/pages/ArtistListPage.vue';
 import Itinerary from '@/components/pages/ItineraryPage.vue';
 import ItineraryTest from '@/components/pages/ItineraryPage2.vue';
 import Login from '@/components/pages/LoginPage.vue';
+import LoginRequired from '@/components/pages/LoginRequiredPage.vue';
 
 
 const router = createRouter({
@@ -21,10 +22,9 @@ const router = createRouter({
             },
             props: true
         },
-        { path: '/itinerary_test', component: ItineraryTest, props: false },
+        { path: '/create-account', component: ItineraryTest, props: false },
         { path: '/login', component: Login, props: false },
-        { path: '/create_account', component: ItineraryTest, props: false },
-        { path: '/denied', component: ItineraryTest, props: false },
+        { path: '/login-required', component: LoginRequired, props: false },
         {
             path: '/new-login',
             component: () => import('@/components/pages/LoginNewPage.vue'),
@@ -50,7 +50,7 @@ router.beforeEach(async (to) => {
         if (requiresAuth && !user) {
             // If they’re trying to access a requiresAuth route and they’re not logged in, 
             // they get sent to “Access Denied” page
-            return '/denied';
+            return '/login-required';
         } else {
             // Otherwise, allow them to intended destination
             return true;
