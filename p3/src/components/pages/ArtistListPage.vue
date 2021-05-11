@@ -149,9 +149,9 @@
             <b> Pelect some mediums above</b>
         </div>
 
-        <h4>List counts</h4>
-        <div class="flex-container">
+        <div v-if="userData" class="flex-container">
             <div class="flex-column">
+                <h4>List counts</h4>
                 <p>
                     Total Artists :{{ artistCount }}<br />
                     Artists In Your Itinerary: {{ itineraryDetails.length
@@ -171,6 +171,17 @@
                 </div>
             </div>
         </div>
+        <div v-else>
+            <p>
+                <b>
+                    You can't build an itinerary till you
+                    <router-link to="/login">
+                        <button>Login</button></router-link
+                    >
+                </b>
+            </p>
+        </div>
+
         <artist-grid
             v-bind:artistList="filteredList"
             v-bind:imgBaseUrl="imageBaseUrl"
@@ -183,6 +194,10 @@
 import ArtistGrid from "@/components/ArtistGrid.vue";
 
 export default {
+    components: {
+        "artist-grid": ArtistGrid,
+    },
+
     data() {
         return {
             checkedGenres: [],
@@ -201,7 +216,10 @@ export default {
     },
 
     computed: {
-        // Get the results of the last gamed played.
+        userData() {
+            return this.$store.state.userData;
+        },
+
         artistCount() {
             if (this.artistList.length > 0) {
                 return this.artistList.length;
@@ -260,10 +278,6 @@ export default {
         messages: {
             type: Array,
         },
-    },
-
-    components: {
-        "artist-grid": ArtistGrid,
     },
 };
 </script>

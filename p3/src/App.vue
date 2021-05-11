@@ -4,7 +4,7 @@
             <img alt="Vue logo" src="./assets/logo.png" />
         -->
         <h1>Art Browser - Somerville Open Studios 2021</h1>
-        <nav>
+        <nav class="sosnav">
             <ul>
                 <li>
                     <router-link
@@ -14,7 +14,9 @@
                         >{{ link }}
                     </router-link>
                 </li>
-                <li v-if="userData">User: {{ userData.name }}</li>
+                <li style="padding-left: 20px" v-if="userData">
+                    User: {{ userData.name }}
+                </li>
                 <li v-else>Not Logged In</li>
             </ul>
         </nav>
@@ -88,24 +90,38 @@ nav ul li {
     display: inline-block;
 }
 
-nav ul li a:link,
+.sosnav {
+    color: blue;
+    padding-left: 5px;
+    margin-left: 5px;
+}
+.sosnav li {
+    color: black;
+}
+
+.sosnav li a {
+    padding-left: 15px;
+    margin-left: 15px;
+    color: darkblue;
+}
+
+ul li a:link,
 a:visited,
 a:hover,
 a:active {
     /* Ref: https://stackoverflow.com/a/49783868 for why inline-block is added */
     text-transform: capitalize;
-    padding: 5px;
     margin: 5px;
     cursor: pointer;
-    color: var(--blue);
     font-weight: bold;
 }
 
-nav ul li a.router-link-active:link,
+ul li a.router-link-active:link,
 a.router-link-active:active {
+    margin: 5px;
     text-decoration: none;
-    color: var(--black);
-    background-color: var(--light-blue);
+    color: red;
+    background-color: papayawhip;
     cursor: inherit;
 }
 </style>

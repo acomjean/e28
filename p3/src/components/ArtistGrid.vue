@@ -18,43 +18,48 @@
                     {{ artistList[i].member_id }}
                     {{ artistList[i].PublicFirstName }}
                     {{ artistList[i].PublicLastName }}
-
-                    <div v-if="checkIfInItinerary(artistList[i].member_id)">
-                        <div v-if="checkIfVisited(artistList[i].member_id)">
-                            <div
-                                v-if="
-                                    itineraryDetailsById[
-                                        artistList[i].member_id
-                                    ].rating == null
-                                "
-                            >
-                                Visited
+                    <div v-if="userData">
+                        <div v-if="checkIfInItinerary(artistList[i].member_id)">
+                            <div v-if="checkIfVisited(artistList[i].member_id)">
+                                <div
+                                    v-if="
+                                        itineraryDetailsById[
+                                            artistList[i].member_id
+                                        ].rating == null
+                                    "
+                                >
+                                    Visited
+                                </div>
+                                <div v-else>
+                                    Rating :
+                                    {{
+                                        itineraryDetailsById[
+                                            artistList[i].member_id
+                                        ].rating
+                                    }}
+                                </div>
                             </div>
                             <div v-else>
-                                Rating :
-                                {{
-                                    itineraryDetailsById[
-                                        artistList[i].member_id
-                                    ].rating
-                                }}
+                                <button
+                                    v-on:click="
+                                        removeFromItinerary(
+                                            artistList[i].member_id
+                                        )
+                                    "
+                                >
+                                    <b> Remove ❌ </b>
+                                </button>
                             </div>
                         </div>
                         <div v-else>
                             <button
                                 v-on:click="
-                                    removeFromItinerary(artistList[i].member_id)
+                                    addToItinerary(artistList[i].member_id)
                                 "
                             >
-                                <b> Remove ❌ </b>
+                                <b> Add ✅️ </b>
                             </button>
                         </div>
-                    </div>
-                    <div v-else>
-                        <button
-                            v-on:click="addToItinerary(artistList[i].member_id)"
-                        >
-                            <b> Add ✅️ </b>
-                        </button>
                     </div>
                 </div>
             </li>
@@ -105,6 +110,10 @@ export default {
     },
 
     computed: {
+        userData() {
+            return this.$store.state.userData;
+        },
+
         memberIdsOfItinerary() {
             var filtered = [];
             for (var i = 0; i < this.itineraryDetails.length; i++) {
