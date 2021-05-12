@@ -77,7 +77,7 @@ export default {
             // jill@harvard.edu/asdfasdf is one of our seed users from e28api/seeds/user.json
             data: {
                 email: "jill@harvard.edu",
-                password: "asdfasdf",
+                password: "",
             },
             errors: null,
             favorites: [],
