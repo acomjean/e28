@@ -118,8 +118,6 @@ export default {
                 password: "required|between:8,100",
             });
 
-            console.log("validating");
-
             if (validator.fails()) {
                 this.errors = validator.errors.all();
             } else {

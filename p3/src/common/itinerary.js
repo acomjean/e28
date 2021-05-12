@@ -23,13 +23,10 @@ export const store = createStore({
 
     mutations: {
         setItinerary(state, payload) {
-            console.log("setProductssetItinerary");
             state.itineraryArray = payload;
         },
 
         setUser(state, payload) {
-            console.log("setting user")
-            console.log(payload);
             state.user = payload['id'];
             state.userData = payload;
             // reset itinerary state if user has logged out. 
@@ -69,8 +66,6 @@ export const store = createStore({
 
 
         addToItinerary(context, memberID) {
-            console.log("adding artist : " + memberID);
-            console.log("for user : " + context.state.user);
             var oneItinerary = {
                 member_id: memberID,
                 user_id: context.state.user,
@@ -89,8 +84,6 @@ export const store = createStore({
         },
 
         removeFromItinerary(context, memberID) {
-            console.log("removing id : " + memberID);
-
             // there should only be on..  But lets remove all matching.
 
             for (var i = 0; i < context.state.itineraryArray.length; i++) {

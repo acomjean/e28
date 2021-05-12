@@ -176,7 +176,7 @@
             <p>
                 <b>
                     You can't build an itinerary till you
-                    <router-link to="/login">
+                    <router-link to="/login" data-test="login-button">
                         <button>Login</button></router-link
                     >
                 </b>
@@ -272,12 +272,6 @@ export default {
 
         imageBaseUrl() {
             return this.$store.state.imageBaseUrl;
-        },
-    },
-
-    props: {
-        messages: {
-            type: Array,
         },
     },
 };
