@@ -41,6 +41,7 @@
                             </div>
                             <div v-else>
                                 <button
+                                    data-test="artistcard-remove"
                                     v-on:click="
                                         removeFromItinerary(
                                             artistList[i].member_id
@@ -53,6 +54,7 @@
                         </div>
                         <div v-else>
                             <button
+                                data-test="artistcard-add"
                                 v-on:click="
                                     addToItinerary(artistList[i].member_id)
                                 "
@@ -69,6 +71,36 @@
 
 <script>
 export default {
+    props: {
+        artistList: {
+            type: Array,
+        },
+        imgBaseUrl: {
+            type: String,
+        },
+    },
+    computed: {
+        userData() {
+            return this.$store.state.userData;
+        },
+
+        memberIdsOfItinerary() {
+            var filtered = [];
+            for (var i = 0; i < this.itineraryDetails.length; i++) {
+                filtered.push("" + this.itineraryDetails[i]["member_id"]);
+            }
+            return filtered;
+        },
+
+        itineraryDetails() {
+            return this.$store.state.itineraryArray;
+        },
+
+        itineraryDetailsById() {
+            return this.$store.getters.itineraryByMemberID();
+        },
+    },
+
     methods: {
         // load picture (just setting the atr with vue will not work)
         getPic(artistData) {
@@ -108,38 +140,6 @@ export default {
                 .map((a) => a.value);
         },
     },
-
-    computed: {
-        userData() {
-            return this.$store.state.userData;
-        },
-
-        memberIdsOfItinerary() {
-            var filtered = [];
-            for (var i = 0; i < this.itineraryDetails.length; i++) {
-                filtered.push("" + this.itineraryDetails[i]["member_id"]);
-            }
-            return filtered;
-        },
-
-        itineraryDetails() {
-            return this.$store.state.itineraryArray;
-        },
-
-        itineraryDetailsById() {
-            return this.$store.getters.itineraryByMemberID();
-        },
-    },
-
-    props: {
-        artistList: {
-            type: Array,
-        },
-        imgBaseUrl: {
-            type: String,
-        },
-    },
-
     watch: {
         artistList: function () {
             // get list of indexes into an array
@@ -180,8 +180,7 @@ export default {
 
     border: 0px solid gray;
 }
-.thumb_container li img {
-}
+
 .artistcard {
     display: flex;
     flex-direction: column;

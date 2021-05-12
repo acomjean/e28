@@ -22,7 +22,7 @@
         </nav>
         <hr />
 
-        <router-view v-bind:messages="messages"> </router-view>
+        <router-view> </router-view>
     </div>
 </template>
 <script>

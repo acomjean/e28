@@ -1,13 +1,15 @@
-# Project 2
+# Project 3
 
 -   Aram Comjean
--   Production URL: <http://e28p2.aramcomjean.com>
+-   Production URL: <http://e28p3.aramcomjean.com>
 
 ## Pages summary
 
 - Home page (Instructions)
 - Artists Browser
 - Itinerary Manager
+- Login
+- New Account
 
 ## SFC summary
 
@@ -15,9 +17,13 @@
 -HomePage.vue
 -ItineraryPage.vue
 
+-LoginPage.vue
+-LoginNewPage.vue
+-LogoutPage.vue
+
 -ArtistGrid.vue
 -ArtistSlideshow.vue
-
+-ErrorField.vue
 
 ## Server interaction
 
@@ -37,27 +43,36 @@ Open Studios need to clean up our db structure.
 
 Images loaded from somervilleopenstudio.org host.
 
-https://stackoverflow.com/questions/40491506/vue-js-dynamic-images-not-working
-
-https://www.telerik.com/blogs/how-to-emit-data-in-vue-beyond-the-vuejs-documentation
-
-https://stackoverflow.com/questions/5915096/get-a-random-item-from-a-javascript-array
-https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+Login Code Based on e28 zip foods example, with some code brought over verbatim
 
 
 p3
 https://stackoverflow.com/questions/45848974/call-an-action-from-within-another-action
-
-
+https://docs.cypress.io/guides/getting-started/testing-your-app#Logging-in
+https://docs.cypress.io/guides/core-concepts/variables-and-aliases#Variables
 
 ## Notes for instructor
 
 * Based on the Somerville Open Studios Artists Browser: Designed and built by me ontop 
 of an old database (mysql). 
-Performance is ok, but not a SPA (not Javascript based). (Symfony/ bootstrap3)
-[artist browser](https://www.somervilleopenstudios.org/web/artists/artist_directory_list/display=grid/medium=All/event=All/map_num=All/display_order=random)
-* One thing that caught me was props are immutable inside a component.  So even though my ArtistSlideshow.vue had new data for each new artist coming in. If someone left the image at slide 7, and the next artist only had 3 images, it would crash.  I couldn't find a Vue lifecycle event to stop, this (even passing in a 0 to start the slideshow at 0 didnt' work)
-* messages and error reporting are in skeletol form from zip foods example.  
-* A lot of common code got pushed up to the App.vue.  
-* There is almost no stlying except for my bad buttons and flex-box/css grid for basic page layout
-* I took the Nav css from zipfoods. 
+* Testing this was difficult due to a lot of functionality behind
+login.   I reference a guide I found on this in Outside resources.  
+* Need to reset state for better testing
+* Need more tests.
+* Left in default users/ tables.  I only have one api on my url.
+* Used a bit of the login, create user code from zipfoods.
+* removed props except for the page building components (ArtistsGrid.vue/ArtistSlideshow.vue)
+
+## How is authentication being used in your application?
+* User can't get to itinerary page without login
+* The browse Artist Page removes the ability to modify the itinerary as well
+* Browse artists page invites users to login
+* Javascript error checking on create new user page. with server side as backup/ user creation confirmation.
+
+## What data entities of your application are being managed via Vuex?
+* Most of them 
+* Logged In user Information
+* Artists Data (static)
+* Itinerary Data (Updateable and stored on e28api server)
+
+

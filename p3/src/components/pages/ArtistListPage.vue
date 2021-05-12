@@ -155,8 +155,10 @@
                 <h4>List counts</h4>
                 <p>
                     Total Artists :{{ artistCount }}<br />
-                    Artists In Your Itinerary: {{ itineraryDetails.length
-                    }}<br />
+                    Artists In Your Itinerary:
+                    <span data-test="itin-count">
+                        {{ itineraryDetails.length }}</span
+                    ><br />
                     Artists in itinerary not visited: {{ artistsToVisit.length
                     }}<br />
                 </p>
@@ -203,17 +205,6 @@ export default {
         return {
             checkedGenres: [],
         };
-    },
-    methods: {
-        // pass on up to parent
-        addToItinerary(memberID) {
-            this.$emit("add-to-itinerary", memberID);
-        },
-
-        // pass on up to parent
-        removeFromItinerary(memberID) {
-            this.$emit("remove-from-itinerary", memberID);
-        },
     },
 
     computed: {
@@ -272,6 +263,18 @@ export default {
 
         imageBaseUrl() {
             return this.$store.state.imageBaseUrl;
+        },
+    },
+
+    methods: {
+        // pass on up to parent
+        addToItinerary(memberID) {
+            this.$emit("add-to-itinerary", memberID);
+        },
+
+        // pass on up to parent
+        removeFromItinerary(memberID) {
+            this.$emit("remove-from-itinerary", memberID);
         },
     },
 };

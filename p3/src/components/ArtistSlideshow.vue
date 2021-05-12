@@ -43,6 +43,31 @@
 
 <script>
 export default {
+    props: {
+        oneArtistDetail: {
+            type: Object,
+        },
+        imgBaseUrl: {
+            type: String,
+        },
+    },
+
+    computed: {
+        maxImageIndex() {
+            return this.oneArtistDetail.image_data.length;
+        },
+
+        imageNumber() {
+            return this.imageIndex + 1;
+        },
+    },
+
+    data() {
+        return {
+            imageIndex: 0,
+        };
+    },
+
     methods: {
         // load picture (just setting the atr with vue will not work)
         getPic() {
@@ -63,30 +88,6 @@ export default {
                 this.imageIndex = nextImage;
             }
         },
-    },
-
-    computed: {
-        maxImageIndex() {
-            return this.oneArtistDetail.image_data.length;
-        },
-
-        imageNumber() {
-            return this.imageIndex + 1;
-        },
-    },
-
-    props: {
-        oneArtistDetail: {
-            type: Object,
-        },
-        imgBaseUrl: {
-            type: String,
-        },
-    },
-    data() {
-        return {
-            imageIndex: 0,
-        };
     },
 };
 </script>

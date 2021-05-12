@@ -1,5 +1,5 @@
 <template>
-    <div id="account-page">
+    <div id="login-page">
         <div v-if="user">
             <h2 data-test="welcome-message">Hi, {{ user.name }}!</h2>
 
@@ -76,26 +76,8 @@ export default {
         user() {
             return this.$store.state.user;
         },
-        products() {
-            return this.$store.state.products;
-        },
     },
     methods: {
-        loadFavorites() {
-            if (this.user) {
-                axios
-                    .get("favorite/query?user_id=" + this.user.id)
-                    .then((response) => {
-                        this.favorites = response.data.favorite.map(
-                            (favorite) => {
-                                return this.$store.getters.getProductById(
-                                    favorite.product_id
-                                );
-                            }
-                        );
-                    });
-            }
-        },
         login() {
             axios.post("login", this.data).then((response) => {
                 if (response.data.authenticated) {
@@ -112,14 +94,6 @@ export default {
                 }
             });
         },
-    },
-    watch: {
-        user() {
-            this.loadFavorites();
-        },
-    },
-    mounted() {
-        this.loadFavorites();
     },
 };
 </script>

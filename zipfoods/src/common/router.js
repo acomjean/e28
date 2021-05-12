@@ -42,6 +42,13 @@ const routes = [
         path: '/account_new',
         component: () => import('@/components/pages/AccountNewPage.vue'),
     },
+
+    {
+        path: '/logout',
+        component: () => import('@/components/pages/LogoutPage.vue'),
+    },
+
+
     {
         // This is a route we can direct the user to if they try to access 
         // a part of the site they don’t have privileges for

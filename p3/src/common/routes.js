@@ -1,6 +1,6 @@
 
 import { createRouter, createWebHistory } from 'vue-router';
-import { store } from '@/common/itinerary.js';
+import { store } from '@/common/store.js';
 
 
 import HomePage from '@/components/pages/HomePage.vue';
