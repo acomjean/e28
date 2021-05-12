@@ -75,4 +75,6 @@ login.   I reference a guide I found on this in Outside resources.
 * Artists Data (static)
 * Itinerary Data (Updateable and stored on e28api server)
 
+## E2E Testing Screenshot
 
+![testing screenshot](p3_testing_screenshot.png)
